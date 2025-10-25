@@ -1,0 +1,27 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 380px);
+  gap: var(--spacing-8);
+}
+
+.mainColumn {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sideColumn {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Responsive breakpoints - Stack sidebar below on smaller screens */
+@media (max-width: 1400px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-8);
+  }
+
+  .sideColumn {
+    max-width: 100%;
+  }
+}

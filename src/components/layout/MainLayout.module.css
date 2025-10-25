@@ -1,0 +1,21 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-bg-primary);
+}
+
+.mainContent {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  transition: margin-left var(--transition-base);
+}
+
+.mainContent.sidebarCollapsed {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+.content {
+  padding: var(--spacing-12) var(--spacing-12);
+  min-height: 100vh;
+  max-width: 1600px;
+}

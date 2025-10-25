@@ -1,0 +1,43 @@
+.section {
+  margin-bottom: var(--spacing-8);
+}
+
+.header {
+  margin-bottom: var(--spacing-6);
+}
+
+.iconHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.vaultIcon {
+  font-size: 2rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.movesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--spacing-6);
+}
+
+@media (max-width: 768px) {
+  .movesGrid {
+    grid-template-columns: 1fr;
+  }
+}

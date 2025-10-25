@@ -1,0 +1,111 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: var(--sidebar-width);
+  background-color: var(--color-bg-secondary);
+  border-right: 1px solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+  transition: width var(--transition-base);
+  z-index: 100;
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-6) var(--spacing-4);
+}
+
+.logoImage {
+  height: 32px;
+  width: auto;
+  transition: all var(--transition-base);
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.collapsed .logoImage {
+  height: 32px;
+  width: 32px;
+}
+
+.nav {
+  flex: 1;
+  padding: var(--spacing-4) 0;
+  overflow-y: auto;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  margin: 0 var(--spacing-2);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  font-size: 0.9375rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.navItem:hover {
+  background-color: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+}
+
+.navItem.active {
+  background-color: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+  border-left: 2px solid var(--color-accent-primary);
+}
+
+.collapsed .navItem {
+  justify-content: center;
+  padding: var(--spacing-3);
+}
+
+.collapsed .navItem span {
+  display: none;
+}
+
+.collapseBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-4);
+  margin: var(--spacing-4);
+  color: var(--color-text-muted);
+  background-color: transparent;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-size: 0.875rem;
+}
+
+.collapseBtn:hover {
+  background-color: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-metallic);
+}
+
+.collapsed .collapseBtn {
+  justify-content: center;
+  padding: var(--spacing-3);
+}
+
+.collapsed .collapseBtn span {
+  display: none;
+}
+
+.chevronCollapsed {
+  transform: rotate(180deg);
+}

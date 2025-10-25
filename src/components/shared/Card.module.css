@@ -1,0 +1,27 @@
+.card {
+  background-color: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-8);
+  transition: all var(--transition-smooth);
+  position: relative;
+}
+
+.hoverable {
+  cursor: pointer;
+}
+
+.hoverable:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-border-metallic);
+}
+
+.hoverable:hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-radial-crimson);
+  opacity: 0.5;
+  border-radius: inherit;
+  pointer-events: none;
+}
