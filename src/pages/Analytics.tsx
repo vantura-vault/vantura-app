@@ -129,14 +129,14 @@ export function Analytics() {
   const companyId = 'demo-company-1';
 
   // Fetch real data from API
-  const { data: historicalData, isLoading: loadingHistorical } = useHistoricalMetrics({
+  const { data: historicalData } = useHistoricalMetrics({
     companyId,
     platform: 'LinkedIn',
     range: TIMEFRAME_MAP[timeframe],
     ma: 7, // 7-day moving average
   });
 
-  const { data: recentPostsData, isLoading: loadingPosts } = useRecentPosts({
+  const { data: recentPostsData } = useRecentPosts({
     companyId,
     limit: 10,
   });
@@ -176,7 +176,7 @@ export function Analytics() {
       likes: post.engagement,
       comments: Math.floor(post.engagement * 0.2),
       engagement: post.engagementRate,
-      trend: (post.engagementRate > 5 ? 'up' : post.engagementRate > 3 ? 'neutral' : 'down') as const,
+      trend: (post.engagementRate > 5 ? 'up' : post.engagementRate > 3 ? 'neutral' : 'down') as 'up' | 'neutral' | 'down',
     }));
   }, [recentPostsData]);
 
