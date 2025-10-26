@@ -3,7 +3,7 @@ import { TimeframeSelector, type Timeframe } from '../components/analytics/Timef
 import { FollowerGrowthChart } from '../components/analytics/FollowerGrowthChart';
 import { PostEngagementChart } from '../components/analytics/PostEngagementChart';
 import { PostPerformanceList } from '../components/analytics/PostPerformanceList';
-import { useHistoricalMetrics, useRecentPosts } from '../hooks';
+import { useHistoricalMetrics, useRecentPosts, useCompanyId } from '../hooks';
 import styles from './Analytics.module.css';
 
 const TIMEFRAME_MAP: { [key in Timeframe]: '1M' | '6M' | '1Y' | 'ALL' } = {
@@ -126,7 +126,7 @@ const mockPosts = [
 
 export function Analytics() {
   const [timeframe, setTimeframe] = useState<Timeframe>('month');
-  const companyId = 'demo-company-1';
+  const companyId = useCompanyId();
 
   // Fetch real data from API
   const { data: historicalData } = useHistoricalMetrics({

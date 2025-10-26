@@ -4,12 +4,12 @@ import type { Competitor } from '../types/competitor';
 import { CompetitorCard } from '../components/competitor/CompetitorCard';
 import { CompetitorListItem } from '../components/competitor/CompetitorListItem';
 import { Button } from '../components/shared/Button';
-import { useCompetitors } from '../hooks';
+import { useCompetitors, useCompanyId } from '../hooks';
 import styles from './CompetitorVault.module.css';
 
 export function CompetitorVault() {
   const [viewMode, setViewMode] = useState<'card' | 'list'>('card');
-  const companyId = 'demo-company-1';
+  const companyId = useCompanyId();
 
   // Fetch real competitors from API
   const { data: competitorsData, isLoading } = useCompetitors({ companyId });

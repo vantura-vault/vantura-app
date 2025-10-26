@@ -5,6 +5,7 @@ import {
   useCompetitors,
   useGenerateSuggestions,
   useAddCompetitor,
+  useCompanyId,
 } from '../hooks';
 
 /**
@@ -13,7 +14,7 @@ import {
  */
 export function ApiTest() {
   const [testResults, setTestResults] = useState<string[]>([]);
-  const companyId = 'demo-company-1';
+  const companyId = useCompanyId();
 
   // Test Analytics - Historical Metrics
   const { data: historicalData, isLoading: historicalLoading, error: historicalError } =

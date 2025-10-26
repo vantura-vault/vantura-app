@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Sparkles, Copy, Check } from 'lucide-react';
-import { useGenerateSuggestions } from '../hooks';
+import { useGenerateSuggestions, useCompanyId } from '../hooks';
 import { Button } from '../components/shared/Button';
 import styles from './Blueprint.module.css';
 
@@ -9,6 +9,7 @@ export function Blueprint() {
   const [objective, setObjective] = useState('engagement');
   const [topics, setTopics] = useState('growth, innovation');
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const companyId = useCompanyId();
 
   const generateMutation = useGenerateSuggestions();
 
@@ -16,7 +17,7 @@ export function Blueprint() {
     const topicTags = topics.split(',').map((t) => t.trim()).filter(Boolean);
 
     generateMutation.mutate({
-      companyId: 'demo-company-1',
+      companyId,
       platform,
       objective,
       topicTags,

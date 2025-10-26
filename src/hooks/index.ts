@@ -5,3 +5,4 @@ export * from './useRecommendations';
 export * from './useAnalytics';
 export * from './useSuggestions';
 export * from './useVault';
+export * from './useCompanyId';
