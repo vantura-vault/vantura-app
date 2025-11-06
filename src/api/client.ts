@@ -14,6 +14,8 @@ class ApiClient {
 
   constructor() {
     this.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+    console.log('🔧 API Client initialized with baseURL:', this.baseURL);
+    console.log('🔧 VITE_API_URL from env:', import.meta.env.VITE_API_URL);
     this.defaultHeaders = {
       'Content-Type': 'application/json',
     };
@@ -25,7 +27,9 @@ class ApiClient {
   }
 
   private buildURL(endpoint: string, params?: Record<string, string>): string {
-    const url = new URL(endpoint, this.baseURL);
+    // Concatenate baseURL and endpoint, ensuring no double slashes
+    const fullURL = `${this.baseURL}${endpoint}`;
+    const url = new URL(fullURL);
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
         url.searchParams.append(key, value);
@@ -44,9 +48,12 @@ class ApiClient {
       try {
         const data = await response.json();
         error.data = data;
-        error.message = data.message || error.message;
+        // Try multiple possible error message fields
+        error.message = data.error || data.message || error.message;
+        console.error('API Error:', { status: response.status, data });
       } catch {
         // Response body is not JSON
+        console.error('Non-JSON error response:', response.statusText);
       }
 
       throw error;
@@ -118,8 +125,8 @@ class ApiClient {
     });
   }
 
-  async delete<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: 'DELETE' });
+  async delete<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
+    return this.request<T>(endpoint, { method: 'DELETE', params });
   }
 }
 

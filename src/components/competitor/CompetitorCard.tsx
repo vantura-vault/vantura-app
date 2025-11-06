@@ -1,13 +1,14 @@
-import { Users, TrendingUp } from 'lucide-react';
+import { Users, TrendingUp, Trash2 } from 'lucide-react';
 import type { Competitor } from '../../types/competitor';
 import { Card } from '../shared/Card';
 import styles from './CompetitorCard.module.css';
 
 interface CompetitorCardProps {
   competitor: Competitor;
+  onDelete?: (competitorId: string) => void;
 }
 
-export function CompetitorCard({ competitor }: CompetitorCardProps) {
+export function CompetitorCard({ competitor, onDelete }: CompetitorCardProps) {
   return (
     <Card className={styles.competitorCard} hoverable>
       <div className={styles.header}>
@@ -23,6 +24,21 @@ export function CompetitorCard({ competitor }: CompetitorCardProps) {
           <p className={styles.handle}>@{competitor.handle}</p>
           <span className={styles.platform}>{competitor.platform}</span>
         </div>
+        {onDelete && (
+          <button
+            className={styles.deleteButton}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (window.confirm(`Remove ${competitor.name} from your competitors?`)) {
+                onDelete(competitor.id);
+              }
+            }}
+            aria-label="Delete competitor"
+            title="Remove competitor"
+          >
+            <Trash2 size={16} />
+          </button>
+        )}
       </div>
 
       <div className={styles.metrics}>

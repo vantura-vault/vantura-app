@@ -7,6 +7,8 @@ import type {
   HistoricalMetricsData,
   RecentPostsParams,
   RecentPostsData,
+  AnalyticsSummaryParams,
+  AnalyticsSummaryData,
 } from '../types/analytics';
 import type {
   GenerateSuggestionsParams,
@@ -21,6 +23,30 @@ import type {
   CompetitorDetailsParams,
   CompetitorCard,
 } from '../types/vault';
+
+// Authentication
+export interface RegisterParams {
+  email: string;
+  name: string;
+  password: string;
+  companyName: string;
+  companyIndustry: string;
+}
+
+export interface AuthResponse {
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    companyId: string | null;
+  };
+  token: string;
+  expiresAt: string;
+}
+
+export const register = async (params: RegisterParams): Promise<AuthResponse> => {
+  return apiClient.post<AuthResponse>('/auth/register', params);
+};
 
 // Metrics
 export const fetchMetrics = async (): Promise<MetricsData> => {
@@ -71,6 +97,7 @@ export const fetchHistoricalMetrics = async (
     ...(params.platform && { platform: params.platform }),
     ...(params.range && { range: params.range }),
     ...(params.ma && { ma: params.ma.toString() }),
+    ...(params.comparisonMode && { comparisonMode: params.comparisonMode }),
   });
   return apiClient.get<HistoricalMetricsData>(`/analytics/historical?${queryParams}`);
 };
@@ -84,6 +111,16 @@ export const fetchRecentPosts = async (
     ...(params.limit && { limit: params.limit.toString() }),
   });
   return apiClient.get<RecentPostsData>(`/analytics/recent?${queryParams}`);
+};
+
+export const fetchAnalyticsSummary = async (
+  params: AnalyticsSummaryParams
+): Promise<AnalyticsSummaryData> => {
+  const queryParams = new URLSearchParams({
+    companyId: params.companyId,
+    ...(params.range && { range: params.range }),
+  });
+  return apiClient.get<AnalyticsSummaryData>(`/analytics/summary?${queryParams}`);
 };
 
 // Post Suggestions
@@ -119,4 +156,8 @@ export const fetchCompetitorDetails = async (
   params: CompetitorDetailsParams
 ): Promise<CompetitorCard> => {
   return apiClient.get<CompetitorCard>(`/vault/competitors/${params.id}`);
+};
+
+export const deleteCompetitor = async (competitorId: string, companyId: string): Promise<void> => {
+  return apiClient.delete<void>(`/vault/competitors/${competitorId}`, { companyId });
 };

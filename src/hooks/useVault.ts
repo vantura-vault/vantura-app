@@ -8,6 +8,7 @@ import {
   addCompetitor,
   addCompetitorViaBrightData,
   fetchCompetitorDetails,
+  deleteCompetitor,
 } from '../api/endpoints';
 import type {
   CompetitorsListParams,
@@ -85,6 +86,37 @@ export const useAddCompetitorViaBrightData = () => {
       // Invalidate competitors list to refetch
       queryClient.invalidateQueries({
         queryKey: ['vault', 'competitors', variables.companyId],
+      });
+    },
+  });
+};
+
+/**
+ * Hook to delete a competitor
+ * @returns Mutation result with cache updates on success
+ */
+export const useDeleteCompetitor = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, Error, { competitorId: string; companyId: string }>({
+    mutationFn: ({ competitorId, companyId }) => deleteCompetitor(competitorId, companyId),
+    onSuccess: (_, variables) => {
+      const queryKey = ['vault', 'competitors', variables.companyId];
+
+      // Update the cache directly to remove the deleted competitor
+      queryClient.setQueryData<CompetitorsListData>(queryKey, (oldData) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          items: oldData.items.filter((item: any) => item.id !== variables.competitorId),
+        };
+      });
+
+      // Also invalidate and refetch to ensure consistency
+      queryClient.invalidateQueries({
+        queryKey,
+        refetchType: 'active',
       });
     },
   });

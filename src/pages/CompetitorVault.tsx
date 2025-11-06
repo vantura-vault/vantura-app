@@ -3,37 +3,65 @@ import { Plus, LayoutGrid, List } from 'lucide-react';
 import type { Competitor } from '../types/competitor';
 import { CompetitorCard } from '../components/competitor/CompetitorCard';
 import { CompetitorListItem } from '../components/competitor/CompetitorListItem';
+import { AddCompetitorModal } from '../components/competitor/AddCompetitorModal';
 import { Button } from '../components/shared/Button';
-import { useCompetitors, useCompanyId } from '../hooks';
+import { useCompetitors, useCompanyId, useDeleteCompetitor } from '../hooks';
 import styles from './CompetitorVault.module.css';
 
 export function CompetitorVault() {
   const [viewMode, setViewMode] = useState<'card' | 'list'>('card');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const companyId = useCompanyId();
 
   // Fetch real competitors from API
   const { data: competitorsData, isLoading } = useCompetitors({ companyId });
 
+  // Delete mutation
+  const deleteCompetitorMutation = useDeleteCompetitor();
+
   // Transform API data to match component format
   const competitors = useMemo<Competitor[]>(() => {
-    if (!competitorsData) return [];
+    if (!competitorsData || !competitorsData.items) {
+      return [];
+    }
 
-    return competitorsData.items.map((comp) => ({
+    return competitorsData.items.map((comp: any) => ({
       id: comp.id,
       name: comp.name,
-      handle: comp.platforms[0]?.handle || 'unknown',
-      platform: comp.platforms[0]?.platform || 'LinkedIn',
+      handle: comp.platforms?.[0]?.url?.split('/').pop() || 'unknown',
+      platform: comp.platforms?.[0]?.platform || 'LinkedIn',
       avatarUrl: comp.logoUrl,
       metrics: {
-        totalFollowers: comp.totalFollowers,
-        averageEngagement: comp.avgEngagement,
+        totalFollowers: comp.totalFollowers || 0,
+        averageEngagement: 0, // Backend doesn't provide this yet
       },
     }));
   }, [competitorsData]);
 
   const handleAddCompetitor = () => {
-    // TODO: Implement add competitor functionality
-    console.log('Add competitor clicked');
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteCompetitor = (competitorId: string) => {
+    console.log('Deleting competitor:', { competitorId, companyId });
+    deleteCompetitorMutation.mutate(
+      { competitorId, companyId },
+      {
+        onSuccess: () => {
+          console.log('Successfully deleted competitor');
+        },
+        onError: (error) => {
+          console.error('Failed to delete competitor:', error);
+          console.error('Error details:', {
+            message: error.message,
+            stack: error.stack,
+            competitorId,
+            companyId
+          });
+          alert(`Failed to delete competitor: ${error.message}`);
+        },
+      }
+    );
   };
 
   return (
@@ -79,13 +107,26 @@ export function CompetitorVault() {
         <div className={viewMode === 'card' ? styles.cardGrid : styles.listView}>
           {viewMode === 'card'
             ? competitors.map((competitor) => (
-                <CompetitorCard key={competitor.id} competitor={competitor} />
+                <CompetitorCard
+                  key={competitor.id}
+                  competitor={competitor}
+                  onDelete={handleDeleteCompetitor}
+                />
               ))
             : competitors.map((competitor) => (
-                <CompetitorListItem key={competitor.id} competitor={competitor} />
+                <CompetitorListItem
+                  key={competitor.id}
+                  competitor={competitor}
+                  onDelete={handleDeleteCompetitor}
+                />
               ))}
         </div>
       )}
+
+      <AddCompetitorModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }

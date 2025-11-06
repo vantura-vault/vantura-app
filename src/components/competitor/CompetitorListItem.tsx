@@ -1,12 +1,13 @@
-import { Users, TrendingUp } from 'lucide-react';
+import { Users, TrendingUp, Trash2 } from 'lucide-react';
 import type { Competitor } from '../../types/competitor';
 import styles from './CompetitorListItem.module.css';
 
 interface CompetitorListItemProps {
   competitor: Competitor;
+  onDelete?: (competitorId: string) => void;
 }
 
-export function CompetitorListItem({ competitor }: CompetitorListItemProps) {
+export function CompetitorListItem({ competitor, onDelete }: CompetitorListItemProps) {
   return (
     <div className={styles.listItem}>
       <div className={styles.competitorInfo}>
@@ -41,6 +42,22 @@ export function CompetitorListItem({ competitor }: CompetitorListItemProps) {
           <span className={styles.metricLabel}>engagement</span>
         </div>
       </div>
+
+      {onDelete && (
+        <button
+          className={styles.deleteButton}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (window.confirm(`Remove ${competitor.name} from your competitors?`)) {
+              onDelete(competitor.id);
+            }
+          }}
+          aria-label="Delete competitor"
+          title="Remove competitor"
+        >
+          <Trash2 size={16} />
+        </button>
+      )}
     </div>
   );
 }
