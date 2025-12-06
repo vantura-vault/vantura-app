@@ -22,9 +22,8 @@ export function PlatformIntel() {
 
       <div className={styles.platformList}>
         {allPlatforms.map((platform, idx) => {
-          const apiName = platform.apiName || platform.name;
-          const isConnected = connectedPlatformNames.has(apiName);
-          const connectedPlatform = dashboard?.platforms?.find(p => p.name === apiName);
+          const isConnected = connectedPlatformNames.has(platform.name);
+          const connectedPlatform = dashboard?.platforms?.find(p => p.name === platform.name);
           const followers = connectedPlatform?.current?.followers || 0;
 
           return (

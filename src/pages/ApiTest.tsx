@@ -74,18 +74,14 @@ export function ApiTest() {
     addCompetitorMutation.mutate(
       {
         companyId,
-        competitor: {
-          name: 'Test Competitor ' + Date.now(),
-          industry: 'Testing',
-          region: 'Test Region',
-          accounts: [
-            {
-              platform: 'LinkedIn',
-              handle: 'testhandle' + Date.now(),
-              displayName: 'Test Competitor',
-            },
-          ],
-        },
+        name: 'Test Competitor ' + Date.now(),
+        platforms: [
+          {
+            platform: 'LinkedIn',
+            url: 'https://linkedin.com/company/testhandle' + Date.now(),
+            type: 'company',
+          },
+        ],
       },
       {
         onSuccess: (data) => {
@@ -158,7 +154,7 @@ export function ApiTest() {
               {competitorsData.items.map((comp) => (
                 <div key={comp.id} style={{ marginLeft: '20px', marginTop: '5px' }}>
                   <p>
-                    {comp.name} | Followers: {comp.totalFollowers} | Engagement: {comp.avgEngagement.toFixed(1)}%
+                    {comp.name} | Followers: {comp.totalFollowers} | Engagement: {comp.averageEngagement.toFixed(1)}%
                   </p>
                 </div>
               ))}
