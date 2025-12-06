@@ -1,0 +1,67 @@
+.card {
+  position: relative;
+  background: #1a1a1a;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: var(--spacing-5);
+  min-height: 140px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  border-color: var(--color-accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+}
+
+.card:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+  /* Limit to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.scoreBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-1) var(--spacing-3);
+  background: transparent;
+  border: 1px solid #555;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #888;
+  width: fit-content;
+}
+
+.platformIcon {
+  position: absolute;
+  bottom: var(--spacing-4);
+  right: var(--spacing-4);
+  opacity: 0.9;
+}
+
+.card:hover .platformIcon {
+  opacity: 1;
+}

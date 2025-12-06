@@ -2,20 +2,18 @@
 
 export interface CompetitorPlatformAccount {
   platform: string;
-  handle: string;
-  profileUrl?: string;
+  url: string;
+  followers: number;
 }
 
 export interface CompetitorCard {
   id: string;
   name: string;
-  industry?: string;
-  region?: string;
-  logoUrl?: string;
+  website?: string | null;
+  logoUrl?: string | null;
   platforms: CompetitorPlatformAccount[];
   totalFollowers: number;
-  avgEngagement: number;
-  createdAt: string;
+  averageEngagement: number;
 }
 
 export interface CompetitorsListParams {
@@ -26,22 +24,17 @@ export interface CompetitorsListData {
   items: CompetitorCard[];
 }
 
-export interface AddCompetitorAccount {
+export interface AddCompetitorPlatform {
   platform: string;
-  handle: string;
-  displayName?: string;
-  profileUrl?: string;
+  url: string;
+  type: 'company' | 'profile';
 }
 
 export interface AddCompetitorParams {
   companyId: string;
-  competitor: {
-    name: string;
-    industry?: string;
-    region?: string;
-    logoUrl?: string;
-    accounts: AddCompetitorAccount[];
-  };
+  name: string;
+  website?: string;
+  platforms?: AddCompetitorPlatform[];
 }
 
 export interface AddCompetitorData {
@@ -69,4 +62,39 @@ export interface BrightDataCompetitorParams {
 
 export interface CompetitorDetailsParams {
   id: string;
+  companyId: string;
+}
+
+export interface CompetitorSnapshot {
+  date: string;
+  followers: number;
+  posts: number;
+}
+
+export interface CompetitorPlatform {
+  platform: string;
+  profileUrl: string;
+  currentFollowers: number;
+  snapshots: CompetitorSnapshot[];
+}
+
+export interface CompetitorPost {
+  id: string;
+  platform: string;
+  content: string;
+  postedAt: string;
+  impressions: number;
+  likes: number;
+  comments: number;
+  engagement: number;
+  engagementRate: string;
+}
+
+export interface CompetitorDetails {
+  id: string;
+  name: string;
+  description: string | null;
+  industry: string | null;
+  platforms: CompetitorPlatform[];
+  posts: CompetitorPost[];
 }

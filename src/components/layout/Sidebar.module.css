@@ -4,7 +4,7 @@
   top: 0;
   height: 100vh;
   width: var(--sidebar-width);
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-bg-primary);
   border-right: 1px solid var(--color-border-subtle);
   display: flex;
   flex-direction: column;
@@ -20,7 +20,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-6) var(--spacing-4);
+  padding: var(--spacing-8) var(--spacing-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+  margin-bottom: var(--spacing-4);
 }
 
 .logoImage {
@@ -46,25 +48,38 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-3);
-  padding: var(--spacing-3) var(--spacing-4);
-  margin: 0 var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-5);
+  margin: var(--spacing-1) var(--spacing-3);
   color: var(--color-text-secondary);
   text-decoration: none;
   border-radius: var(--radius-md);
   transition: all var(--transition-base);
   font-size: 0.9375rem;
   font-weight: var(--font-weight-medium);
+  position: relative;
 }
 
 .navItem:hover {
-  background-color: var(--color-bg-elevated);
+  background-color: var(--color-bg-tertiary);
   color: var(--color-text-primary);
 }
 
 .navItem.active {
-  background-color: var(--color-bg-elevated);
-  color: var(--color-text-primary);
-  border-left: 2px solid var(--color-accent-primary);
+  background: linear-gradient(90deg, rgba(233, 30, 99, 0.15) 0%, rgba(233, 30, 99, 0.05) 100%);
+  color: #e91e63;
+  border-left: 3px solid #e91e63;
+}
+
+.navItem.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: linear-gradient(180deg, #e91e63 0%, #f06292 100%);
+  border-radius: 0 2px 2px 0;
 }
 
 .collapsed .navItem {

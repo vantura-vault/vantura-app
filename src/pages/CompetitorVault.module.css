@@ -19,17 +19,18 @@
 }
 
 .title {
-  font-size: 2rem;
-  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-tight);
   margin: 0;
 }
 
 .subtitle {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-secondary);
   margin: 0;
+  line-height: 1.6;
 }
 
 .actions {

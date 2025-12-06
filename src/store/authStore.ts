@@ -2,11 +2,11 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { queryClient } from '../providers/QueryProvider';
 
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
-  companyId?: string;
+  companyId?: string | null;
   avatar?: string;
 }
 

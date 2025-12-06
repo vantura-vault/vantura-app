@@ -1,6 +1,6 @@
 export interface CompetitorMetrics {
   totalFollowers: number;
-  averageEngagement: number;
+  postCount: number;
 }
 
 export interface Competitor {

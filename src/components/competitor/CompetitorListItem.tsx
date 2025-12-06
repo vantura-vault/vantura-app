@@ -1,4 +1,5 @@
-import { Users, TrendingUp, Trash2 } from 'lucide-react';
+import { Users, FileText, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import type { Competitor } from '../../types/competitor';
 import styles from './CompetitorListItem.module.css';
 
@@ -8,8 +9,14 @@ interface CompetitorListItemProps {
 }
 
 export function CompetitorListItem({ competitor, onDelete }: CompetitorListItemProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/competitor-vault/${competitor.id}`);
+  };
+
   return (
-    <div className={styles.listItem}>
+    <div className={styles.listItem} onClick={handleClick}>
       <div className={styles.competitorInfo}>
         {competitor.avatarUrl ? (
           <img src={competitor.avatarUrl} alt={competitor.name} className={styles.avatar} />
@@ -35,11 +42,11 @@ export function CompetitorListItem({ competitor, onDelete }: CompetitorListItemP
         </div>
 
         <div className={styles.metric}>
-          <TrendingUp size={14} className={styles.icon} />
+          <FileText size={14} className={styles.icon} />
           <span className={styles.metricValue}>
-            {competitor.metrics.averageEngagement.toFixed(2)}%
+            {competitor.metrics.postCount}
           </span>
-          <span className={styles.metricLabel}>engagement</span>
+          <span className={styles.metricLabel}>posts</span>
         </div>
       </div>
 

@@ -3,7 +3,9 @@ import { TimeframeSelector, type Timeframe } from '../components/analytics/Timef
 import { FollowerGrowthChart } from '../components/analytics/FollowerGrowthChart';
 import { PostEngagementChart } from '../components/analytics/PostEngagementChart';
 import { PostPerformanceList } from '../components/analytics/PostPerformanceList';
-import { useHistoricalMetrics, useRecentPosts, useCompanyId } from '../hooks';
+import { useHistoricalMetrics, useRecentPosts, useAnalyticsSummary, useCompanyId } from '../hooks';
+import { formatNumber } from '../utils/formatters';
+import type { ComparisonMode } from '../types/analytics';
 import styles from './Analytics.module.css';
 
 const TIMEFRAME_MAP: { [key in Timeframe]: '1M' | '6M' | '1Y' | 'ALL' } = {
@@ -126,6 +128,7 @@ const mockPosts = [
 
 export function Analytics() {
   const [timeframe, setTimeframe] = useState<Timeframe>('month');
+  const [comparisonMode, setComparisonMode] = useState<ComparisonMode>('top');
   const companyId = useCompanyId();
 
   // Fetch real data from API
@@ -134,6 +137,7 @@ export function Analytics() {
     platform: 'LinkedIn',
     range: TIMEFRAME_MAP[timeframe],
     ma: 7, // 7-day moving average
+    comparisonMode,
   });
 
   const { data: recentPostsData } = useRecentPosts({
@@ -141,24 +145,41 @@ export function Analytics() {
     limit: 10,
   });
 
-  // Transform API data to chart format
+  const { data: summaryData } = useAnalyticsSummary({
+    companyId,
+    range: TIMEFRAME_MAP[timeframe],
+  });
+
+  // Transform API data to chart format with sampling
   const followerData = useMemo(() => {
     if (!historicalData) return generateFollowerData(timeframe);
 
-    return historicalData.dates.map((date, i) => ({
-      date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      followers: historicalData.followers[i],
-    }));
+    // Sample data points based on timeframe to reduce clutter
+    const samplingRate = timeframe === 'month' ? 3 : timeframe === '6months' ? 7 : timeframe === 'year' ? 14 : 30;
+
+    return historicalData.dates
+      .map((date, i) => ({
+        date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        followers: historicalData.followers[i],
+        competitor: historicalData.competitorFollowers?.[i],
+        index: i,
+      }))
+      .filter((_, i) => i % samplingRate === 0 || i === historicalData.dates.length - 1); // Keep first, every Nth, and last
   }, [historicalData, timeframe]);
 
   const engagementData = useMemo(() => {
     if (!historicalData) return generateEngagementData(timeframe);
 
-    return historicalData.dates.map((date, i) => ({
-      date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      likes: Math.floor(historicalData.engagement[i] * 0.7), // Approximate split
-      comments: Math.floor(historicalData.engagement[i] * 0.3),
-    }));
+    const samplingRate = timeframe === 'month' ? 3 : timeframe === '6months' ? 7 : timeframe === 'year' ? 14 : 30;
+
+    return historicalData.dates
+      .map((date, i) => ({
+        date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        likes: Math.floor(historicalData.engagement[i] * 0.7),
+        comments: Math.floor(historicalData.engagement[i] * 0.3),
+        index: i,
+      }))
+      .filter((_, i) => i % samplingRate === 0 || i === historicalData.dates.length - 1);
   }, [historicalData, timeframe]);
 
   // Transform recent posts data
@@ -184,30 +205,38 @@ export function Analytics() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div>
-          <h1 className={styles.title}>Strategic Intelligence</h1>
+          <h1 className={styles.title}>Analytics Dashboard</h1>
           <p className={styles.subtitle}>
-            Deep dive into performance metrics and tactical insights
+            Performance Overview & Insights
           </p>
         </div>
+      </div>
+
+      <div className={styles.filterBar}>
         <TimeframeSelector selected={timeframe} onChange={setTimeframe} />
+        <select
+          className={styles.filterSelect}
+          value={comparisonMode}
+          onChange={(e) => setComparisonMode(e.target.value as ComparisonMode)}
+        >
+          <option value="top">Top Competitor Average</option>
+          <option value="all">All Competitors</option>
+          <option value="industry">Industry Average</option>
+          <option value="none">No Comparison</option>
+        </select>
       </div>
 
-      <div className={styles.chartsGrid}>
-        <FollowerGrowthChart
-          data={followerData}
-          title="Total Follower Growth (LinkedIn, 7-day MA)"
-        />
-        <PostEngagementChart
-          data={engagementData}
-          title="Post Engagement Metrics"
-        />
-      </div>
-
-      <div className={styles.postsSection}>
-        <PostPerformanceList
-          posts={posts}
-          title="Recent Post Performance"
-        />
+      <div className={styles.performanceSection}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Performance Comparison</h2>
+        </div>
+        <div className={styles.chartsGrid}>
+          <FollowerGrowthChart
+            data={followerData}
+            title="Total Follower Growth (LinkedIn, 7-day MA)"
+            showCompetitor={comparisonMode !== 'none'}
+          />
+        </div>
       </div>
     </div>
   );

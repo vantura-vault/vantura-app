@@ -6,3 +6,7 @@ export * from './useAnalytics';
 export * from './useSuggestions';
 export * from './useVault';
 export * from './useCompanyId';
+export * from './useDashboard';
+export * from './useDataChamber';
+export * from './useBlueprints';
+export * from './useWebSocket';

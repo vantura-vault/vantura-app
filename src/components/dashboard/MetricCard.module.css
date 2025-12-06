@@ -34,7 +34,7 @@
 .value {
   font-family: var(--font-mono);
   font-size: 2rem;
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-primary);
   letter-spacing: -0.02em;
 }

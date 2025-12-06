@@ -1,0 +1,193 @@
+.strategicGoals {
+  background: var(--color-bg-secondary);
+  padding: var(--spacing-6);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-5);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.addButton {
+  background: var(--color-accent-primary);
+  border: none;
+  padding: var(--spacing-2);
+  cursor: pointer;
+  color: white;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  transition: background 200ms ease-out;
+}
+
+.addButton:hover {
+  background: #2563eb;
+}
+
+.goalsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.goalItem {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--spacing-4);
+  align-items: center;
+  padding: var(--spacing-4);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-default);
+}
+
+.goalValue {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-2xl);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  min-width: 80px;
+}
+
+.goalInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.goalLabel {
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.goalTarget {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.goalStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.goalActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.editButton {
+  background: none;
+  border: none;
+  padding: var(--spacing-2);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  transition: all 200ms ease-out;
+  display: flex;
+  align-items: center;
+}
+
+.editButton:hover {
+  color: var(--color-accent-primary);
+  background: var(--color-bg-secondary);
+}
+
+.iconAchieved {
+  color: var(--color-success);
+}
+
+.iconPending {
+  color: var(--color-text-muted);
+}
+
+.editInput,
+.editLabel,
+.editTargetInput {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-2);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+}
+
+.editInput {
+  width: 80px;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+}
+
+.editLabel {
+  width: 100%;
+  font-weight: 500;
+}
+
+.editTarget {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.editTargetInput {
+  width: 80px;
+}
+
+.editUnitInput {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-2);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+  width: 100px;
+}
+
+.editActions {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.saveButton,
+.cancelButton {
+  background: none;
+  border: none;
+  padding: var(--spacing-2);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 200ms ease-out;
+  display: flex;
+  align-items: center;
+}
+
+.saveButton {
+  color: var(--color-success);
+}
+
+.saveButton:hover {
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.cancelButton {
+  color: var(--color-error);
+}
+
+.cancelButton:hover {
+  background: rgba(239, 68, 68, 0.1);
+}

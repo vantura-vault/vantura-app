@@ -25,17 +25,24 @@ export function CompetitorVault() {
       return [];
     }
 
-    return competitorsData.items.map((comp: any) => ({
-      id: comp.id,
-      name: comp.name,
-      handle: comp.platforms?.[0]?.url?.split('/').pop() || 'unknown',
-      platform: comp.platforms?.[0]?.platform || 'LinkedIn',
-      avatarUrl: comp.logoUrl,
-      metrics: {
-        totalFollowers: comp.totalFollowers || 0,
-        averageEngagement: 0, // Backend doesn't provide this yet
-      },
-    }));
+    return competitorsData.items.map((comp: any) => {
+      // Extract handle from URL (remove trailing slashes and get last segment)
+      const url = comp.platforms?.[0]?.url || '';
+      const urlParts = url.replace(/\/$/, '').split('/');
+      const handle = urlParts[urlParts.length - 1] || 'unknown';
+
+      return {
+        id: comp.id,
+        name: comp.name,
+        handle,
+        platform: comp.platforms?.[0]?.platform || 'LinkedIn',
+        avatarUrl: comp.logoUrl,
+        metrics: {
+          totalFollowers: comp.totalFollowers || 0,
+          postCount: comp.postCount || 0,
+        },
+      };
+    });
   }, [competitorsData]);
 
   const handleAddCompetitor = () => {

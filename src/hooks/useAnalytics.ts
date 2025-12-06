@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchHistoricalMetrics, fetchRecentPosts } from '../api/endpoints';
+import { fetchHistoricalMetrics, fetchRecentPosts, fetchAnalyticsSummary } from '../api/endpoints';
 import type {
   HistoricalMetricsParams,
   HistoricalMetricsData,
   RecentPostsParams,
   RecentPostsData,
+  AnalyticsSummaryParams,
+  AnalyticsSummaryData,
 } from '../types/analytics';
 
 /**
@@ -37,6 +39,23 @@ export const useRecentPosts = (
     queryKey: ['analytics', 'recent', params],
     queryFn: () => fetchRecentPosts(params),
     staleTime: 2 * 60 * 1000, // 2 minutes
+    enabled: options?.enabled !== false,
+  });
+};
+
+/**
+ * Hook to fetch analytics summary metrics
+ * @param params - Query parameters including companyId and range
+ * @param options - React Query options
+ */
+export const useAnalyticsSummary = (
+  params: AnalyticsSummaryParams,
+  options?: { enabled?: boolean }
+) => {
+  return useQuery<AnalyticsSummaryData, Error>({
+    queryKey: ['analytics', 'summary', params],
+    queryFn: () => fetchAnalyticsSummary(params),
+    staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: options?.enabled !== false,
   });
 };

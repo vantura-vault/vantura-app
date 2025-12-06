@@ -6,7 +6,6 @@ import {
 import {
   fetchCompetitors,
   addCompetitor,
-  addCompetitorViaBrightData,
   fetchCompetitorDetails,
   deleteCompetitor,
 } from '../api/endpoints';
@@ -15,9 +14,8 @@ import type {
   CompetitorsListData,
   AddCompetitorParams,
   AddCompetitorData,
-  BrightDataCompetitorParams,
   CompetitorDetailsParams,
-  CompetitorCard,
+  CompetitorDetails,
 } from '../types/vault';
 
 /**
@@ -31,7 +29,15 @@ export const useCompetitors = (
 ) => {
   return useQuery<CompetitorsListData, Error>({
     queryKey: ['vault', 'competitors', params.companyId],
-    queryFn: () => fetchCompetitors(params),
+    queryFn: async () => {
+      console.log('%c[useCompetitors] 📥 Fetching competitors...', 'color: #00aaff');
+      const data = await fetchCompetitors(params);
+      console.log('%c[useCompetitors] ✅ Received competitors:', 'color: #00ff00', {
+        count: data.items?.length || 0,
+        items: data.items?.map((c: any) => ({ id: c.id, name: c.name, followers: c.totalFollowers })),
+      });
+      return data;
+    },
     staleTime: 10 * 60 * 1000, // 10 minutes
     enabled: options?.enabled !== false,
   });
@@ -46,9 +52,23 @@ export const useCompetitorDetails = (
   params: CompetitorDetailsParams,
   options?: { enabled?: boolean }
 ) => {
-  return useQuery<CompetitorCard, Error>({
-    queryKey: ['vault', 'competitor', params.id],
-    queryFn: () => fetchCompetitorDetails(params),
+  return useQuery<CompetitorDetails, Error>({
+    queryKey: ['vault', 'competitor', params.id, params.companyId],
+    queryFn: async () => {
+      console.log('%c[useCompetitorDetails] 📥 Fetching competitor details...', 'color: #00aaff', { id: params.id });
+      const data = await fetchCompetitorDetails(params);
+      console.log('%c[useCompetitorDetails] ✅ Received details:', 'color: #00ff00', {
+        name: data.name,
+        platforms: data.platforms?.length || 0,
+        posts: data.posts?.length || 0,
+        postsPreview: data.posts?.slice(0, 3).map((p: any) => ({
+          id: p.id,
+          likes: p.likes,
+          engagement: p.engagement,
+        })),
+      });
+      return data;
+    },
     staleTime: 10 * 60 * 1000, // 10 minutes
     enabled: options?.enabled !== false,
   });
@@ -63,25 +83,6 @@ export const useAddCompetitor = () => {
 
   return useMutation<AddCompetitorData, Error, AddCompetitorParams>({
     mutationFn: (params: AddCompetitorParams) => addCompetitor(params),
-    onSuccess: (_, variables) => {
-      // Invalidate competitors list to refetch
-      queryClient.invalidateQueries({
-        queryKey: ['vault', 'competitors', variables.companyId],
-      });
-    },
-  });
-};
-
-/**
- * Hook to add a competitor via BrightData webhook
- * @returns Mutation result with invalidation on success
- */
-export const useAddCompetitorViaBrightData = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<AddCompetitorData, Error, BrightDataCompetitorParams>({
-    mutationFn: (params: BrightDataCompetitorParams) =>
-      addCompetitorViaBrightData(params),
     onSuccess: (_, variables) => {
       // Invalidate competitors list to refetch
       queryClient.invalidateQueries({

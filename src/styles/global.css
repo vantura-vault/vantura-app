@@ -96,7 +96,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: 3.5rem;
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-medium);
 }
 
 h2 {
@@ -164,6 +164,26 @@ h4 {
 
 .radial-glow:hover::before {
   opacity: 1;
+}
+
+/* Standardized Page Headers */
+.page-header {
+  margin-bottom: var(--spacing-8);
+}
+
+.page-title {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  letter-spacing: var(--letter-spacing-tight);
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+.page-subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.6;
 }
 
 /* Smooth animations */

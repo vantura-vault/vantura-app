@@ -1,4 +1,5 @@
-import { Users, TrendingUp, Trash2 } from 'lucide-react';
+import { Users, FileText, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import type { Competitor } from '../../types/competitor';
 import { Card } from '../shared/Card';
 import styles from './CompetitorCard.module.css';
@@ -9,8 +10,14 @@ interface CompetitorCardProps {
 }
 
 export function CompetitorCard({ competitor, onDelete }: CompetitorCardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/competitor-vault/${competitor.id}`);
+  };
+
   return (
-    <Card className={styles.competitorCard} hoverable>
+    <Card className={styles.competitorCard} hoverable onClick={handleClick}>
       <div className={styles.header}>
         {competitor.avatarUrl ? (
           <img src={competitor.avatarUrl} alt={competitor.name} className={styles.avatar} />
@@ -54,11 +61,11 @@ export function CompetitorCard({ competitor, onDelete }: CompetitorCardProps) {
 
         <div className={styles.metric}>
           <div className={styles.metricHeader}>
-            <TrendingUp size={16} className={styles.icon} />
-            <span className={styles.metricLabel}>Avg. Engagement</span>
+            <FileText size={16} className={styles.icon} />
+            <span className={styles.metricLabel}>Posts Tracked</span>
           </div>
           <div className={styles.metricValue}>
-            {competitor.metrics.averageEngagement.toFixed(2)}%
+            {competitor.metrics.postCount}
           </div>
         </div>
       </div>

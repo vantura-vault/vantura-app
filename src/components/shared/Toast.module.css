@@ -1,0 +1,131 @@
+.container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--color-bg-secondary, #121212);
+  border: 1px solid var(--color-border-primary, #333);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast.info {
+  border-left: 3px solid var(--color-accent-primary, #3B82F6);
+}
+
+.toast.info .icon {
+  color: var(--color-accent-primary, #3B82F6);
+}
+
+.toast.success {
+  border-left: 3px solid #22C55E;
+}
+
+.toast.success .icon {
+  color: #22C55E;
+}
+
+.toast.error {
+  border-left: 3px solid #EF4444;
+}
+
+.toast.error .icon {
+  color: #EF4444;
+}
+
+.toast.progress {
+  border-left: 3px solid var(--color-accent-primary, #3B82F6);
+}
+
+.toast.progress .icon {
+  color: var(--color-accent-primary, #3B82F6);
+}
+
+.icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary, #fff);
+}
+
+.message {
+  font-size: 13px;
+  color: var(--color-text-secondary, #999);
+  margin-top: 4px;
+}
+
+.progressBar {
+  height: 4px;
+  background: var(--color-bg-tertiary, #1E1E1E);
+  border-radius: 2px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--color-accent-primary, #3B82F6);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.closeButton {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--color-text-secondary, #999);
+  border-radius: 4px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.closeButton:hover {
+  background: var(--color-bg-tertiary, #1E1E1E);
+  color: var(--color-text-primary, #fff);
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

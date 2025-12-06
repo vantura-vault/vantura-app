@@ -1,17 +1,14 @@
 import { WelcomeHeader } from '../components/dashboard/WelcomeHeader';
 import { MetricsGrid } from '../components/dashboard/MetricsGrid';
 import { PlatformIntel } from '../components/dashboard/PlatformIntel';
-import { useAuthStore } from '../store/authStore';
+import { useDashboard } from '../hooks';
 import styles from './Dashboard.module.css';
 
 export function Dashboard() {
-  const user = useAuthStore((state) => state.user);
+  const { data: dashboard, isLoading } = useDashboard();
 
-  // Get company name from user's company or use default
-  // TODO: Fetch actual company details from API when companyId is available
-  const companyName = user?.companyId === 'demo-company-1'
-    ? 'Poppi'
-    : user?.name || 'Poppi';
+  // Get company name from API, fallback to 'Vantura Strategist' if loading
+  const companyName = dashboard?.company?.name || (isLoading ? 'Vantura Strategist' : 'there');
 
   return (
     <div className={styles.dashboard}>

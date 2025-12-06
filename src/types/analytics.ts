@@ -1,10 +1,13 @@
 // Analytics API Types
 
+export type ComparisonMode = 'none' | 'top' | 'all' | 'industry';
+
 export interface HistoricalMetricsParams {
   companyId: string;
   platform?: string;
   range?: '1M' | '6M' | '1Y' | 'ALL';
   ma?: number;
+  comparisonMode?: ComparisonMode;
 }
 
 export interface HistoricalMetricsData {
@@ -13,6 +16,8 @@ export interface HistoricalMetricsData {
   dates: string[];
   followers: number[];
   engagement: number[];
+  competitorFollowers?: number[];
+  competitorEngagement?: number[];
 }
 
 export interface PostPerformance {
@@ -35,4 +40,18 @@ export interface RecentPostsParams {
 
 export interface RecentPostsData {
   items: PostPerformance[];
+}
+
+export interface AnalyticsSummaryParams {
+  companyId: string;
+  range?: '1M' | '6M' | '1Y' | 'ALL';
+}
+
+export interface AnalyticsSummaryData {
+  totalReach: number;
+  totalReachChange: number;
+  engagementRate: number;
+  engagementRateChange: number;
+  audienceGrowth: number;
+  audienceGrowthChange: number;
 }

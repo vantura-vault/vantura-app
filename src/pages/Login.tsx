@@ -1,0 +1,116 @@
+import { useState, type FormEvent } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuthStore } from '../store/authStore';
+import { login as apiLogin } from '../api/endpoints';
+import { prefetchAllData } from '../utils/prefetch';
+import vanturaLogo from '../assets/vantura-logo.svg';
+import styles from './Login.module.css';
+
+export function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    try {
+      const response = await apiLogin(email, password);
+
+      // Store auth data
+      setAuth(response.user, response.token);
+
+      // Prefetch all data for instant page loads
+      // This runs in the background and doesn't block navigation
+      if (response.user.companyId) {
+        prefetchAllData({ companyId: response.user.companyId }).catch((err) => {
+          console.warn('Failed to prefetch data:', err);
+        });
+      }
+
+      // Redirect to dashboard
+      navigate('/');
+    } catch (err) {
+      console.error('Login failed:', err);
+      setError('Invalid email or password. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.loginBox}>
+        <img src={vanturaLogo} alt="Vantura" className={styles.logo} />
+
+        <p className={styles.subtitle}>Sign in to your Vantura account</p>
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.inputGroup}>
+            <label htmlFor="email" className={styles.label}>
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={styles.input}
+              placeholder="you@example.com"
+              required
+              autoComplete="email"
+              autoFocus
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="password" className={styles.label}>
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={styles.input}
+              placeholder="••••••••"
+              required
+              autoComplete="current-password"
+            />
+          </div>
+
+          {error && (
+            <div className={styles.error}>
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className={styles.submitButton}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Signing in...' : 'Sign In'}
+          </button>
+        </form>
+
+        <p className={styles.hint}>
+          Demo: demo@vantura.com (any password)
+        </p>
+
+        <p className={styles.signupLink}>
+          Don't have an account?{' '}
+          <Link to="/signup" className={styles.link}>
+            Sign up
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}
