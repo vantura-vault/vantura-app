@@ -333,6 +333,12 @@
   font-weight: 500;
 }
 
+.variantActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
 .copyButton {
   padding: var(--spacing-2);
   background: transparent;
@@ -354,6 +360,17 @@
 
 .checkIcon {
   color: #22c55e;
+}
+
+.teaserText {
+  margin: 0 0 var(--spacing-4) 0;
+  padding: var(--spacing-3);
+  background: var(--color-bg-tertiary);
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-style: italic;
+  line-height: 1.5;
 }
 
 .variantContent {

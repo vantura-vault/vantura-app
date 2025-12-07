@@ -100,10 +100,6 @@ export function Login() {
           </button>
         </form>
 
-        <p className={styles.hint}>
-          Demo: demo@vantura.com (any password)
-        </p>
-
         <p className={styles.signupLink}>
           Don't have an account?{' '}
           <Link to="/signup" className={styles.link}>

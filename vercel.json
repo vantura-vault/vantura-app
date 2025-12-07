@@ -9,6 +9,6 @@
     }
   ],
   "env": {
-    "VITE_API_URL": "https://vantura-api.onrender.com"
+    "VITE_API_URL": "https://vantura-api.onrender.com/api"
   }
 }

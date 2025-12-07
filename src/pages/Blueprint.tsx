@@ -4,6 +4,7 @@ import { useGenerateSuggestions, useCompanyId, useSaveBlueprint, useBlueprints }
 import { Button } from '../components/shared/Button';
 import { ChipFilter, type ChipOption } from '../components/shared/ChipFilter';
 import { BlueprintCard, BlueprintDetailModal } from '../components/blueprints';
+import { PlatformIcon } from '../components/shared/PlatformIcon';
 import type { Blueprint as BlueprintType } from '../types/blueprint';
 import styles from './Blueprint.module.css';
 
@@ -129,6 +130,15 @@ export function Blueprint() {
 
   const handleGenerate = () => {
     const topicTags = topics.split(',').map((t) => t.trim()).filter(Boolean);
+
+    // Reset saved state when generating new blueprints
+    setSavedBlueprintIds([null, null, null]);
+    setBlueprintTitles(['Blueprint 1', 'Blueprint 2', 'Blueprint 3']);
+    localStorage.removeItem(SAVED_STATE_KEY);
+
+    // Clear previous results so loading state shows cleanly
+    setSavedResults(null);
+    localStorage.removeItem(BLUEPRINT_STORAGE_KEY);
 
     generateMutation.mutate({
       companyId,
@@ -417,7 +427,13 @@ export function Blueprint() {
 
           {(generateMutation.data?.variants || savedResults?.variants) && (
             <div className={styles.variantsGrid}>
-              {(generateMutation.data?.variants || savedResults?.variants)?.map((variant: any, index: number) => (
+              {(generateMutation.data?.variants || savedResults?.variants)?.map((variant: any, index: number) => {
+                // Get first ~60 characters as teaser, cutting at word boundary
+                const teaser = variant.text.length > 60
+                  ? variant.text.substring(0, 60).replace(/\s+\S*$/, '') + '...'
+                  : variant.text;
+
+                return (
                 <div key={index} className={styles.variantCard}>
                   <div className={styles.variantHeader}>
                     <div className={styles.variantMeta}>
@@ -446,18 +462,24 @@ export function Blueprint() {
                         Score: {variant.finalScore.toFixed(2)}
                       </span>
                     </div>
-                    <button
-                      className={styles.copyButton}
-                      onClick={() => handleCopy(variant.text, index)}
-                      title="Copy to clipboard"
-                    >
-                      {copiedIndex === index ? (
-                        <Check size={16} className={styles.checkIcon} />
-                      ) : (
-                        <Copy size={16} />
-                      )}
-                    </button>
+                    <div className={styles.variantActions}>
+                      <PlatformIcon platform={platform} size={24} />
+                      <button
+                        className={styles.copyButton}
+                        onClick={() => handleCopy(variant.text, index)}
+                        title="Copy to clipboard"
+                      >
+                        {copiedIndex === index ? (
+                          <Check size={16} className={styles.checkIcon} />
+                        ) : (
+                          <Copy size={16} />
+                        )}
+                      </button>
+                    </div>
                   </div>
+
+                  {/* Teaser Preview */}
+                  <p className={styles.teaserText}>{teaser}</p>
 
                   {/* Reasoning Section */}
                   {variant.reasoning && (
@@ -503,7 +525,8 @@ export function Blueprint() {
                     </Button>
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
           )}
         </div>
