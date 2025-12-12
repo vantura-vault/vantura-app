@@ -1,0 +1,123 @@
+.section {
+  margin-bottom: var(--spacing-8);
+}
+
+.header {
+  margin-bottom: var(--spacing-6);
+}
+
+.iconHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.vaultIcon {
+  color: var(--color-accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  padding: var(--spacing-4) var(--spacing-6);
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background-color var(--transition-fast);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row:hover {
+  background-color: var(--color-bg-tertiary);
+}
+
+.youRow {
+  background: var(--gradient-crimson-subtle);
+  border-left: 3px solid var(--color-accent-primary);
+}
+
+.youRow:hover {
+  background: var(--gradient-crimson-subtle);
+}
+
+.rankSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rank {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  width: 24px;
+  text-align: center;
+}
+
+.trophy {
+  color: #FFD700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nameSection {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.name {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.rateSection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.rate {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 768px) {
+  .row {
+    grid-template-columns: 40px 1fr auto;
+    padding: var(--spacing-3) var(--spacing-4);
+  }
+}

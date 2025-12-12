@@ -1,6 +1,8 @@
 import { WelcomeHeader } from '../components/dashboard/WelcomeHeader';
 import { MetricsGrid } from '../components/dashboard/MetricsGrid';
 import { PlatformIntel } from '../components/dashboard/PlatformIntel';
+import { EngagementLeaderboard } from '../components/dashboard/EngagementLeaderboard';
+import { RecentBlueprints } from '../components/dashboard/RecentBlueprints';
 import { useDashboard } from '../hooks';
 import styles from './Dashboard.module.css';
 
@@ -15,6 +17,10 @@ export function Dashboard() {
       <div className={styles.mainColumn}>
         <WelcomeHeader companyName={companyName} />
         <MetricsGrid />
+        {dashboard?.engagementLeaderboard && (
+          <EngagementLeaderboard entries={dashboard.engagementLeaderboard} />
+        )}
+        <RecentBlueprints />
       </div>
       <div className={styles.sideColumn}>
         <PlatformIntel />

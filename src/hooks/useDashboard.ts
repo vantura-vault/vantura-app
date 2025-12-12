@@ -1,6 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '../api/client';
 
+export interface LeaderboardEntry {
+  rank: number;
+  name: string;
+  engagementRate: number;
+  isYou: boolean;
+  companyId: string;
+}
+
 interface DashboardData {
   company: {
     id: string;
@@ -28,6 +36,7 @@ interface DashboardData {
   platforms: any[];
   insights: any[];
   recentActivity: any[];
+  engagementLeaderboard: LeaderboardEntry[];
 }
 
 export const useDashboard = () => {

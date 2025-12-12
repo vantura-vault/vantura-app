@@ -1,8 +1,9 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useCallback, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { login as apiLogin } from '../api/endpoints';
 import { prefetchAllData } from '../utils/prefetch';
+import { LoadingSplash } from '../components/LoadingSplash';
 import vanturaLogo from '../assets/vantura-logo.svg';
 import styles from './Login.module.css';
 
@@ -11,9 +12,21 @@ export function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showSplash, setShowSplash] = useState(false);
+  const [companyId, setCompanyId] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
+
+  const handleSplashComplete = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
+
+  const handlePrefetch = useCallback(async () => {
+    if (companyId) {
+      await prefetchAllData({ companyId });
+    }
+  }, [companyId]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -26,23 +39,30 @@ export function Login() {
       // Store auth data
       setAuth(response.user, response.token);
 
-      // Prefetch all data for instant page loads
-      // This runs in the background and doesn't block navigation
+      // Show splash screen and start prefetching
       if (response.user.companyId) {
-        prefetchAllData({ companyId: response.user.companyId }).catch((err) => {
-          console.warn('Failed to prefetch data:', err);
-        });
+        setCompanyId(response.user.companyId);
+        setShowSplash(true);
+      } else {
+        // No company - go straight to dashboard
+        navigate('/');
       }
-
-      // Redirect to dashboard
-      navigate('/');
     } catch (err) {
       console.error('Login failed:', err);
       setError('Invalid email or password. Please try again.');
-    } finally {
       setIsLoading(false);
     }
   };
+
+  // Show splash screen while prefetching data
+  if (showSplash) {
+    return (
+      <LoadingSplash
+        onComplete={handleSplashComplete}
+        prefetchFn={handlePrefetch}
+      />
+    );
+  }
 
   return (
     <div className={styles.container}>

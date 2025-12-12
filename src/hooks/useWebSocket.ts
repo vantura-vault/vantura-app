@@ -176,12 +176,12 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
       // Invalidate analytics queries for the scraped competitor
       queryClient.invalidateQueries({
         queryKey: ['analytics'],
-        predicate: (query) => {
+        predicate: (query): boolean => {
           // Invalidate analytics queries that include the targetId
           const key = query.queryKey;
           if (key[0] === 'analytics' && key.length > 1) {
             const params = key[key.length - 1];
-            return params && typeof params === 'object' && (params as any).companyId === payload.targetId;
+            return Boolean(params && typeof params === 'object' && (params as any).companyId === payload.targetId);
           }
           return false;
         },

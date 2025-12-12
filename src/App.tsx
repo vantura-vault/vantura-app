@@ -8,7 +8,6 @@ import { DataChamber } from './pages/DataChamber';
 import { CompetitorVault } from './pages/CompetitorVault';
 import { CompetitorDetail } from './pages/CompetitorDetail';
 import { Blueprint } from './pages/Blueprint';
-import { Analytics } from './pages/Analytics';
 import { Settings } from './pages/Settings';
 import { ApiTest } from './pages/ApiTest';
 
@@ -69,17 +68,6 @@ function App() {
             <ProtectedRoute>
               <MainLayout pageTitle="Blueprints">
                 <Blueprint />
-              </MainLayout>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/analytics"
-          element={
-            <ProtectedRoute>
-              <MainLayout pageTitle="Analytics">
-                <Analytics />
               </MainLayout>
             </ProtectedRoute>
           }
