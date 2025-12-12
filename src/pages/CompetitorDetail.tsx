@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, TrendingUp, ExternalLink } from 'lucide-react';
 import { useCompetitorDetails, useCompanyId } from '../hooks';
+import { useWebSocket } from '../hooks/useWebSocket';
 import { formatNumber, formatRelativeTime } from '../utils/formatters';
 import { Button } from '../components/shared/Button';
 import styles from './CompetitorDetail.module.css';
@@ -9,6 +10,9 @@ export function CompetitorDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const companyId = useCompanyId();
+
+  // Listen for websocket events - auto-refreshes when scrape completes for this competitor
+  useWebSocket();
 
   const { data: competitor, isLoading, error } = useCompetitorDetails({
     id: id!,

@@ -6,12 +6,16 @@ import { CompetitorListItem } from '../components/competitor/CompetitorListItem'
 import { AddCompetitorModal } from '../components/competitor/AddCompetitorModal';
 import { Button } from '../components/shared/Button';
 import { useCompetitors, useCompanyId, useDeleteCompetitor } from '../hooks';
+import { useWebSocket } from '../hooks/useWebSocket';
 import styles from './CompetitorVault.module.css';
 
 export function CompetitorVault() {
   const [viewMode, setViewMode] = useState<'card' | 'list'>('card');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const companyId = useCompanyId();
+
+  // Listen for websocket events - automatically invalidates React Query cache on scrape:completed
+  useWebSocket();
 
   // Fetch real competitors from API
   const { data: competitorsData, isLoading } = useCompetitors({ companyId });

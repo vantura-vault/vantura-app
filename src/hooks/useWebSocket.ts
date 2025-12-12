@@ -165,12 +165,26 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
       console.log('[WebSocket] Invalidating queries for:', {
         competitorsList: ['vault', 'competitors', companyId],
         competitorDetail: ['vault', 'competitor', payload.targetId],
+        analytics: ['analytics'],
       });
       queryClient.invalidateQueries({
         queryKey: ['vault', 'competitors', companyId],
       });
       queryClient.invalidateQueries({
         queryKey: ['vault', 'competitor', payload.targetId],
+      });
+      // Invalidate analytics queries for the scraped competitor
+      queryClient.invalidateQueries({
+        queryKey: ['analytics'],
+        predicate: (query) => {
+          // Invalidate analytics queries that include the targetId
+          const key = query.queryKey;
+          if (key[0] === 'analytics' && key.length > 1) {
+            const params = key[key.length - 1];
+            return params && typeof params === 'object' && (params as any).companyId === payload.targetId;
+          }
+          return false;
+        },
       });
       console.log('[WebSocket] Queries invalidated - UI should refresh');
     });

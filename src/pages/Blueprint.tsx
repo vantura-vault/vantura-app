@@ -427,13 +427,7 @@ export function Blueprint() {
 
           {(generateMutation.data?.variants || savedResults?.variants) && (
             <div className={styles.variantsGrid}>
-              {(generateMutation.data?.variants || savedResults?.variants)?.map((variant: any, index: number) => {
-                // Get first ~60 characters as teaser, cutting at word boundary
-                const teaser = variant.text.length > 60
-                  ? variant.text.substring(0, 60).replace(/\s+\S*$/, '') + '...'
-                  : variant.text;
-
-                return (
+              {(generateMutation.data?.variants || savedResults?.variants)?.map((variant: any, index: number) => (
                 <div key={index} className={styles.variantCard}>
                   <div className={styles.variantHeader}>
                     <div className={styles.variantMeta}>
@@ -477,9 +471,6 @@ export function Blueprint() {
                       </button>
                     </div>
                   </div>
-
-                  {/* Teaser Preview */}
-                  <p className={styles.teaserText}>{teaser}</p>
 
                   {/* Reasoning Section */}
                   {variant.reasoning && (
@@ -525,8 +516,7 @@ export function Blueprint() {
                     </Button>
                   </div>
                 </div>
-              );
-              })}
+              ))}
             </div>
           )}
         </div>
