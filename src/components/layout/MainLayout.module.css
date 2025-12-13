@@ -16,6 +16,7 @@
 
 .content {
   padding: var(--spacing-12) var(--spacing-12);
+  padding-top: calc(var(--topbar-height) + var(--spacing-8));
   min-height: 100vh;
   max-width: 1600px;
 }

@@ -1,6 +1,12 @@
-import { useEffect, useState } from 'react';
-import vanturaLogo from '../assets/vantura-logo.svg';
+import { useEffect, useState, useMemo } from 'react';
+import loadingGif from '../assets/vantura-loading.gif';
 import styles from './LoadingSplash.module.css';
+
+const LOADING_MESSAGES = [
+  'Obtaining your unfair advantage',
+  'Seeking alpha',
+  'Finding the secret formula',
+];
 
 interface LoadingSplashProps {
   onComplete: () => void;
@@ -9,6 +15,12 @@ interface LoadingSplashProps {
 
 export function LoadingSplash({ onComplete, prefetchFn }: LoadingSplashProps) {
   const [progress, setProgress] = useState(0);
+
+  // Pick a random message once on mount
+  const loadingMessage = useMemo(
+    () => LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)],
+    []
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -30,9 +42,7 @@ export function LoadingSplash({ onComplete, prefetchFn }: LoadingSplashProps) {
     prefetchFn()
       .then(() => {
         if (isMounted) {
-          // Complete the progress bar
           setProgress(100);
-          // Small delay for visual feedback before transitioning
           setTimeout(() => {
             if (isMounted) {
               onComplete();
@@ -62,7 +72,7 @@ export function LoadingSplash({ onComplete, prefetchFn }: LoadingSplashProps) {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <img src={vanturaLogo} alt="Vantura" className={styles.logo} />
+        <img src={loadingGif} alt="Loading..." className={styles.loadingGif} />
 
         <div className={styles.progressContainer}>
           <div
@@ -71,7 +81,7 @@ export function LoadingSplash({ onComplete, prefetchFn }: LoadingSplashProps) {
           />
         </div>
 
-        <p className={styles.loadingText}>Loading your dashboard...</p>
+        <p className={styles.loadingText}>{loadingMessage}</p>
       </div>
     </div>
   );

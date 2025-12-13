@@ -36,6 +36,19 @@
   gap: var(--spacing-2);
 }
 
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.competitorLogo {
+  width: var(--font-size-3xl);
+  height: var(--font-size-3xl);
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
 .title {
   font-size: var(--font-size-3xl);
   font-weight: 500;
@@ -168,6 +181,7 @@
 /* Posts */
 .postsGrid {
   display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-4);
 }
 
@@ -177,10 +191,23 @@
   border-radius: var(--radius-lg);
   padding: var(--spacing-5);
   transition: all 200ms ease-out;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 
 .postCard:hover {
-  border-color: var(--color-border-metallic);
+  border-color: var(--color-accent-primary);
+  transform: translateY(-2px);
+}
+
+.postCard:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+}
+
+.postCardExpanded {
+  grid-column: span 1;
 }
 
 .postHeader {
@@ -190,12 +217,16 @@
   margin-bottom: var(--spacing-3);
 }
 
+.postPlatformWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
 .postPlatform {
   font-size: var(--font-size-sm);
   font-weight: 500;
-  color: var(--color-accent-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: var(--color-text-primary);
 }
 
 .postDate {
@@ -205,34 +236,37 @@
 
 .postContent {
   color: var(--color-text-primary);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
   line-height: 1.6;
-  margin: 0 0 var(--spacing-4) 0;
+  margin: 0 0 var(--spacing-3) 0;
+  flex: 1;
+}
+
+.expandHint {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-3);
 }
 
 .postStats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  display: flex;
   gap: var(--spacing-4);
-  padding-top: var(--spacing-4);
+  padding-top: var(--spacing-3);
   border-top: 1px solid var(--color-border-default);
 }
 
 .postStat {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: var(--spacing-1);
 }
 
-.postStatLabel {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.statIcon {
+  color: var(--color-text-muted);
 }
 
 .postStatValue {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-primary);
 }
@@ -245,6 +279,12 @@
 }
 
 /* Responsive */
+@media (max-width: 1200px) {
+  .postsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     padding: var(--spacing-4);
@@ -258,7 +298,7 @@
     grid-template-columns: 1fr;
   }
 
-  .postStats {
-    grid-template-columns: repeat(2, 1fr);
+  .postsGrid {
+    grid-template-columns: 1fr;
   }
 }

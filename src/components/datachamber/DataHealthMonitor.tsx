@@ -1,4 +1,5 @@
-import { CheckCircle2, Circle, AlertCircle, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { CheckCircle2, Circle, AlertCircle, Loader2, ChevronDown } from 'lucide-react';
 import { Card } from '../shared/Card';
 import { useDataHealth } from '../../hooks';
 import styles from './DataHealthMonitor.module.css';
@@ -8,6 +9,7 @@ interface DataHealthMonitorProps {
 }
 
 export function DataHealthMonitor({ companyId }: DataHealthMonitorProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const { data: health, isLoading } = useDataHealth(companyId);
 
   const score = health?.score ?? 0;
@@ -83,7 +85,19 @@ export function DataHealthMonitor({ companyId }: DataHealthMonitorProps) {
       </div>
 
       <div className={styles.componentsSection}>
-        <div className={styles.componentsList}>
+        <button
+          className={styles.dropdownHeader}
+          onClick={() => setIsExpanded(!isExpanded)}
+          aria-expanded={isExpanded}
+        >
+          <span>View Details</span>
+          <ChevronDown
+            size={16}
+            className={`${styles.chevron} ${isExpanded ? styles.chevronExpanded : ''}`}
+          />
+        </button>
+
+        <div className={`${styles.componentsList} ${isExpanded ? styles.expanded : ''}`}>
           {components.map((component) => (
             <div key={component.name} className={styles.componentItem}>
               <div className={styles.componentHeader}>

@@ -1,15 +1,25 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, TrendingUp, ExternalLink } from 'lucide-react';
+import { ArrowLeft, TrendingUp, ExternalLink, Heart, MessageCircle, BarChart3 } from 'lucide-react';
 import { useCompetitorDetails, useCompanyId } from '../hooks';
 import { useWebSocket } from '../hooks/useWebSocket';
 import { formatNumber, formatRelativeTime } from '../utils/formatters';
 import { Button } from '../components/shared/Button';
+import { PlatformIcon } from '../components/shared/PlatformIcon';
 import styles from './CompetitorDetail.module.css';
+
+// Truncate text to a specific word count
+const truncateText = (text: string, wordCount = 20): string => {
+  const words = text.split(/\s+/);
+  if (words.length <= wordCount) return text;
+  return words.slice(0, wordCount).join(' ') + '...';
+};
 
 export function CompetitorDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const companyId = useCompanyId();
+  const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
 
   // Listen for websocket events - auto-refreshes when scrape completes for this competitor
   useWebSocket();
@@ -57,7 +67,16 @@ export function CompetitorDetail() {
         </Button>
 
         <div className={styles.headerInfo}>
-          <h1 className={styles.title}>{competitor.name}</h1>
+          <div className={styles.titleRow}>
+            {competitor.logoUrl && (
+              <img
+                src={competitor.logoUrl}
+                alt={`${competitor.name} logo`}
+                className={styles.competitorLogo}
+              />
+            )}
+            <h1 className={styles.title}>{competitor.name}</h1>
+          </div>
           {competitor.industry && (
             <span className={styles.industry}>{competitor.industry}</span>
           )}
@@ -80,17 +99,6 @@ export function CompetitorDetail() {
         <div className={styles.statCard}>
           <div className={styles.statLabel}>Total Posts</div>
           <div className={styles.statValue}>{competitor.posts.length}</div>
-        </div>
-        <div className={styles.statCard}>
-          <div className={styles.statLabel}>Avg Engagement</div>
-          <div className={styles.statValue}>
-            {competitor.posts.length > 0
-              ? formatNumber(
-                  competitor.posts.reduce((sum, p) => sum + p.engagement, 0) /
-                    competitor.posts.length
-                )
-              : '0'}
-          </div>
         </div>
       </div>
 
@@ -138,31 +146,68 @@ export function CompetitorDetail() {
           <div className={styles.emptyState}>No posts available</div>
         ) : (
           <div className={styles.postsGrid}>
-            {competitor.posts.map((post) => (
-              <div key={post.id} className={styles.postCard}>
-                <div className={styles.postHeader}>
-                  <span className={styles.postPlatform}>{post.platform}</span>
-                  <span className={styles.postDate}>
-                    {formatRelativeTime(new Date(post.postedAt))}
-                  </span>
-                </div>
-                <p className={styles.postContent}>{post.content}</p>
-                <div className={styles.postStats}>
-                  <div className={styles.postStat}>
-                    <span className={styles.postStatLabel}>Likes</span>
-                    <span className={styles.postStatValue}>
-                      {formatNumber(post.likes)}
+            {competitor.posts.map((post) => {
+              const isExpanded = expandedPostId === post.id;
+              const needsTruncation = post.content.split(/\s+/).length > 20;
+
+              return (
+                <div
+                  key={post.id}
+                  className={`${styles.postCard} ${isExpanded ? styles.postCardExpanded : ''}`}
+                  onClick={() => setExpandedPostId(isExpanded ? null : post.id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      setExpandedPostId(isExpanded ? null : post.id);
+                    }
+                  }}
+                >
+                  <div className={styles.postHeader}>
+                    <div className={styles.postPlatformWrapper}>
+                      <PlatformIcon platform={post.platform} size={20} />
+                      <span className={styles.postPlatform}>{post.platform}</span>
+                    </div>
+                    <span className={styles.postDate}>
+                      {formatRelativeTime(new Date(post.postedAt))}
                     </span>
                   </div>
-                  <div className={styles.postStat}>
-                    <span className={styles.postStatLabel}>Comments</span>
-                    <span className={styles.postStatValue}>
-                      {formatNumber(post.comments)}
+
+                  <p className={styles.postContent}>
+                    {isExpanded || !needsTruncation
+                      ? post.content
+                      : truncateText(post.content, 20)}
+                  </p>
+
+                  {needsTruncation && (
+                    <span className={styles.expandHint}>
+                      {isExpanded ? 'Click to collapse' : 'Click to expand'}
                     </span>
+                  )}
+
+                  <div className={styles.postStats}>
+                    <div className={styles.postStat}>
+                      <Heart size={14} className={styles.statIcon} />
+                      <span className={styles.postStatValue}>
+                        {formatNumber(post.likes)}
+                      </span>
+                    </div>
+                    <div className={styles.postStat}>
+                      <MessageCircle size={14} className={styles.statIcon} />
+                      <span className={styles.postStatValue}>
+                        {formatNumber(post.comments)}
+                      </span>
+                    </div>
+                    <div className={styles.postStat}>
+                      <BarChart3 size={14} className={styles.statIcon} />
+                      <span className={styles.postStatValue}>
+                        {post.engagementRate}%
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

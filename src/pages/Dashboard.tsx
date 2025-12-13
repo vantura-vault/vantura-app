@@ -11,20 +11,17 @@ export function Dashboard() {
 
   // Get company name from API, fallback to 'Vantura Strategist' if loading
   const companyName = dashboard?.company?.name || (isLoading ? 'Vantura Strategist' : 'there');
+  const companyLogo = dashboard?.company?.profilePictureUrl || undefined;
 
   return (
     <div className={styles.dashboard}>
-      <div className={styles.mainColumn}>
-        <WelcomeHeader companyName={companyName} />
-        <MetricsGrid />
-        {dashboard?.engagementLeaderboard && (
-          <EngagementLeaderboard entries={dashboard.engagementLeaderboard} />
-        )}
-        <RecentBlueprints />
-      </div>
-      <div className={styles.sideColumn}>
-        <PlatformIntel />
-      </div>
+      <WelcomeHeader companyName={companyName} logoUrl={companyLogo} />
+      <MetricsGrid />
+      <PlatformIntel />
+      {dashboard?.engagementLeaderboard && (
+        <EngagementLeaderboard entries={dashboard.engagementLeaderboard} />
+      )}
+      <RecentBlueprints />
     </div>
   );
 }

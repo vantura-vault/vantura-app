@@ -15,6 +15,7 @@ interface DashboardData {
     name: string;
     industry: string | null;
     description: string | null;
+    profilePictureUrl: string | null;
   };
   overview: {
     totalFollowers: number;

@@ -93,6 +93,7 @@ export interface CompetitorPost {
 export interface CompetitorDetails {
   id: string;
   name: string;
+  logoUrl: string | null;
   description: string | null;
   industry: string | null;
   platforms: CompetitorPlatform[];

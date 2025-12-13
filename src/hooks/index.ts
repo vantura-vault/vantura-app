@@ -10,3 +10,4 @@ export * from './useDashboard';
 export * from './useDataChamber';
 export * from './useBlueprints';
 export * from './useWebSocket';
+export * from './useFiles';

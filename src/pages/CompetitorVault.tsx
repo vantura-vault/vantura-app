@@ -1,11 +1,11 @@
 import { useState, useMemo } from 'react';
-import { Plus, LayoutGrid, List } from 'lucide-react';
+import { Plus, LayoutGrid, List, RefreshCw, Loader2 } from 'lucide-react';
 import type { Competitor } from '../types/competitor';
 import { CompetitorCard } from '../components/competitor/CompetitorCard';
 import { CompetitorListItem } from '../components/competitor/CompetitorListItem';
 import { AddCompetitorModal } from '../components/competitor/AddCompetitorModal';
 import { Button } from '../components/shared/Button';
-import { useCompetitors, useCompanyId, useDeleteCompetitor } from '../hooks';
+import { useCompetitors, useCompanyId, useDeleteCompetitor, useRefreshAllCompetitors } from '../hooks';
 import { useWebSocket } from '../hooks/useWebSocket';
 import styles from './CompetitorVault.module.css';
 
@@ -22,6 +22,9 @@ export function CompetitorVault() {
 
   // Delete mutation
   const deleteCompetitorMutation = useDeleteCompetitor();
+
+  // Refresh all mutation
+  const { mutate: refreshAll, isPending: isRefreshing } = useRefreshAllCompetitors();
 
   // Transform API data to match component format
   const competitors = useMemo<Competitor[]>(() => {
@@ -103,6 +106,18 @@ export function CompetitorVault() {
               <List size={18} />
             </button>
           </div>
+          <Button
+            variant="secondary"
+            onClick={() => refreshAll(companyId)}
+            disabled={isRefreshing || competitors.length === 0}
+          >
+            {isRefreshing ? (
+              <Loader2 size={18} className={styles.spinner} />
+            ) : (
+              <RefreshCw size={18} />
+            )}
+            Refresh All
+          </Button>
           <Button onClick={handleAddCompetitor}>
             <Plus size={18} />
             Add Competitor

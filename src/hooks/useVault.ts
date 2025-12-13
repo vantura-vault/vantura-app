@@ -8,7 +8,10 @@ import {
   addCompetitor,
   fetchCompetitorDetails,
   deleteCompetitor,
+  refreshAllCompetitors,
+  type RefreshAllCompetitorsResult,
 } from '../api/endpoints';
+import { toast } from '../store/toastStore';
 import type {
   CompetitorsListParams,
   CompetitorsListData,
@@ -119,6 +122,38 @@ export const useDeleteCompetitor = () => {
         queryKey,
         refetchType: 'active',
       });
+    },
+  });
+};
+
+/**
+ * Hook to refresh all competitors (scrape for new posts)
+ * @returns Mutation result with toast notifications
+ */
+export const useRefreshAllCompetitors = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<RefreshAllCompetitorsResult, Error, string>({
+    mutationFn: (companyId: string) => refreshAllCompetitors(companyId),
+    onSuccess: (data, companyId) => {
+      if (data.inProgress) {
+        toast.warning('A scrape is already in progress. Please wait.');
+      } else if (data.queued > 0) {
+        toast.success(`Refreshing ${data.queued} competitor${data.queued > 1 ? 's' : ''}...`);
+        if (data.skipped > 0) {
+          toast.info(`${data.skipped} competitor${data.skipped > 1 ? 's' : ''} skipped (refreshed within last hour)`);
+        }
+      } else {
+        toast.info('All competitors were refreshed recently. Try again in an hour.');
+      }
+
+      // Invalidate competitors list to refetch when scrapes complete
+      queryClient.invalidateQueries({
+        queryKey: ['vault', 'competitors', companyId],
+      });
+    },
+    onError: () => {
+      toast.error('Failed to refresh competitors');
     },
   });
 };

@@ -43,9 +43,14 @@ export function RecentBlueprints() {
     }
   };
 
-  const handleBlueprintClick = (_blueprint: Blueprint) => {
-    // Navigate to blueprints page with the saved tab active
-    navigate('/blueprint');
+  const handleBlueprintClick = (blueprint: Blueprint) => {
+    // Navigate to blueprints page with saved tab active and open this blueprint
+    navigate('/blueprint', {
+      state: {
+        tab: 'saved',
+        openBlueprintId: blueprint.id
+      }
+    });
   };
 
   if (isLoading) {

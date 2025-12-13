@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ProfileCard } from '../components/datachamber/ProfileCard';
 import { ProfilePictureModal } from '../components/datachamber/ProfilePictureModal';
-import { PersonalNotes } from '../components/datachamber/PersonalNotes';
 import { CompanyValues } from '../components/datachamber/CompanyValues';
 import { DataHealthMonitor } from '../components/datachamber/DataHealthMonitor';
 import { IntegrationsPanel } from '../components/datachamber/IntegrationsPanel';
@@ -33,8 +32,6 @@ export function DataChamber() {
   });
 
   // Use data from API or fallback to defaults
-  const personalNotes = settings?.personalNotes || '';
-
   const companyValues = {
     values: settings?.values || ['Innovation', 'Transparency', 'Customer-First', 'Data-Driven'],
     brandVoice: settings?.brandVoice || 'Professional yet approachable. We speak with authority on industry trends while remaining accessible to founders and decision-makers.',
@@ -92,28 +89,6 @@ export function DataChamber() {
     }
   };
 
-  const handleFileUpload = (files: FileList) => {
-    console.log('Files uploaded:', files);
-    // Handle file upload logic here
-  };
-
-  const handleUpdateNotes = (notes: string) => {
-    if (!companyId) {
-      console.error('No companyId available');
-      return;
-    }
-
-    updateSettings.mutate({
-      companyId,
-      settings: {
-        personalNotes: notes,
-      },
-    }, {
-      onError: (error) => {
-        console.error('Error updating personal notes:', error);
-      },
-    });
-  };
 
   const handleUpdateValues = (updatedValues: typeof companyValues) => {
     if (!companyId) {
@@ -203,8 +178,7 @@ export function DataChamber() {
           onSyncLinkedIn={handleSyncLinkedIn}
           isSyncing={isSyncingLinkedIn}
         />
-        <PersonalNotes notes={personalNotes} onUpdate={handleUpdateNotes} />
-        <FileUploadZone onFileSelect={handleFileUpload} />
+        <FileUploadZone companyId={companyId} />
       </div>
 
       <ProfilePictureModal

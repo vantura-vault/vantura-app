@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Sparkles, Copy, Check, Save, Edit2, Lightbulb, Bookmark } from 'lucide-react';
 import { useGenerateSuggestions, useCompanyId, useSaveBlueprint, useBlueprints } from '../hooks';
 import { Button } from '../components/shared/Button';
@@ -61,6 +62,7 @@ export function Blueprint() {
 
   const companyId = useCompanyId();
   const saveBlueprintMutation = useSaveBlueprint();
+  const location = useLocation();
 
   // Fetch saved blueprints
   const { data: savedBlueprintsData, isLoading: savedBlueprintsLoading, error: savedBlueprintsError } = useBlueprints({
@@ -72,6 +74,22 @@ export function Blueprint() {
     limit: 50,
     offset: 0,
   });
+
+  // Handle navigation state from dashboard (open specific blueprint)
+  useEffect(() => {
+    const state = location.state as { tab?: Tab; openBlueprintId?: string } | null;
+    if (state?.tab) {
+      setActiveTab(state.tab);
+    }
+    if (state?.openBlueprintId && savedBlueprintsData?.blueprints) {
+      const blueprint = savedBlueprintsData.blueprints.find(
+        (b) => b.id === state.openBlueprintId
+      );
+      if (blueprint) {
+        setSelectedBlueprint(blueprint);
+      }
+    }
+  }, [location.state, savedBlueprintsData?.blueprints]);
 
   // Debug logging
   useEffect(() => {

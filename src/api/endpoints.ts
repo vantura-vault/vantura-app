@@ -184,6 +184,16 @@ export const deleteCompetitor = async (competitorId: string, companyId: string):
   return apiClient.delete<void>(`/vault/competitors/${competitorId}`, { companyId });
 };
 
+export interface RefreshAllCompetitorsResult {
+  queued: number;
+  skipped: number;
+  inProgress: boolean;
+}
+
+export const refreshAllCompetitors = async (companyId: string): Promise<RefreshAllCompetitorsResult> => {
+  return apiClient.post<RefreshAllCompetitorsResult>('/vault/competitors/refresh-all', { companyId });
+};
+
 // Data Chamber
 export const fetchDataChamberSettings = async (companyId: string): Promise<DataChamberSettings> => {
   const queryParams = new URLSearchParams({ companyId });
@@ -260,4 +270,59 @@ export const updateBlueprintTitle = async (id: string, companyId: string, title:
 export const deleteBlueprint = async (id: string, companyId: string): Promise<{ message: string }> => {
   const queryParams = new URLSearchParams({ companyId });
   return apiClient.delete<{ message: string }>(`/blueprints/${id}?${queryParams}`);
+};
+
+// Company Files
+export interface CompanyFile {
+  id: string;
+  companyId: string;
+  filename: string;
+  originalName: string;
+  mimeType: string;
+  size: number;
+  s3Key: string;
+  s3Url: string;
+  uploadedAt: string;
+}
+
+export interface UploadFilesResponse {
+  uploaded: CompanyFile[];
+  errors?: { filename: string; error: string }[];
+}
+
+export const fetchCompanyFiles = async (companyId: string): Promise<CompanyFile[]> => {
+  const queryParams = new URLSearchParams({ companyId });
+  return apiClient.get<CompanyFile[]>(`/files?${queryParams}`);
+};
+
+export const uploadCompanyFiles = async (
+  companyId: string,
+  files: File[]
+): Promise<UploadFilesResponse> => {
+  const formData = new FormData();
+  formData.append('companyId', companyId);
+  files.forEach((file) => formData.append('files', file));
+
+  const token = localStorage.getItem('auth_token');
+  const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
+  const response = await fetch(`${baseUrl}/files/upload`, {
+    method: 'POST',
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Upload failed');
+  }
+
+  const result = await response.json();
+  return result.data as UploadFilesResponse;
+};
+
+export const deleteCompanyFile = async (fileId: string): Promise<{ deleted: boolean }> => {
+  return apiClient.delete<{ deleted: boolean }>(`/files/${fileId}`);
 };

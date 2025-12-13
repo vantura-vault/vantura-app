@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Sidebar } from './Sidebar';
+import { TopBar } from './TopBar';
 import { WebSocketProvider } from '../../providers/WebSocketProvider';
 import { ToastContainer } from '../shared/Toast';
 import styles from './MainLayout.module.css';
@@ -18,6 +19,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       <div className={styles.layout}>
         <Sidebar isCollapsed={isSidebarCollapsed} onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)} />
         <div className={`${styles.mainContent} ${isSidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
+          <TopBar isSidebarCollapsed={isSidebarCollapsed} />
           <main className={styles.content}>
             {children}
           </main>
