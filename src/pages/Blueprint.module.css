@@ -23,14 +23,15 @@
 
 .content {
   display: grid;
-  grid-template-columns: 400px 1fr;
-  gap: var(--spacing-6);
+  grid-template-columns: 400px 8px 1fr;
+  gap: 0;
 }
 
 .controlPanel {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
+  padding-right: var(--spacing-4);
 }
 
 .card {
@@ -64,7 +65,8 @@
 }
 
 .select,
-.input {
+.input,
+.textarea {
   width: 100%;
   padding: var(--spacing-3);
   background: var(--color-bg-tertiary);
@@ -73,17 +75,32 @@
   color: var(--color-text-primary);
   font-size: 0.9375rem;
   transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
 }
 
 .select:focus,
-.input:focus {
+.input:focus,
+.textarea:focus {
   outline: none;
   border-color: var(--color-accent-primary);
 }
 
 .select:hover,
-.input:hover {
+.input:hover,
+.textarea:hover {
   border-color: var(--color-accent-primary);
+}
+
+.labelHint {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin: var(--spacing-1) 0 var(--spacing-3);
 }
 
 /* Intelligence Switches */
@@ -178,6 +195,7 @@
 
 .resultsPanel {
   min-height: 400px;
+  padding-left: var(--spacing-4);
 }
 
 .emptyState {
@@ -520,7 +538,20 @@
 
 @media (max-width: 1024px) {
   .content {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-6);
+  }
+
+  .controlPanel {
+    padding-right: 0;
+  }
+
+  .resultsPanel {
+    padding-left: 0;
+  }
+
+  .resizeDivider {
+    display: none;
   }
 
   .variantFooter {
@@ -854,4 +885,63 @@
   .chipRow {
     flex-wrap: wrap;
   }
+}
+
+/* Coming Soon State */
+.comingSoonState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.comingSoonIcon {
+  color: var(--color-accent-primary);
+  opacity: 0.5;
+  margin-bottom: var(--spacing-4);
+}
+
+.comingSoonState h3 {
+  margin: 0 0 var(--spacing-2) 0;
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+}
+
+.comingSoonState p {
+  margin: 0;
+}
+
+/* Draggable Divider for Resizable Panels */
+.resizeDivider {
+  width: 8px;
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.resizeDivider:hover,
+.resizeDivider.dragging {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.resizeDivider::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 40px;
+  background: var(--color-border-metallic);
+  border-radius: 1px;
+  transition: background 0.2s ease;
+}
+
+.resizeDivider:hover::after,
+.resizeDivider.dragging::after {
+  background: var(--color-accent-primary);
 }

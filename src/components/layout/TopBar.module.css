@@ -4,8 +4,9 @@
   left: 0;
   right: 0;
   height: var(--topbar-height);
-  background-color: var(--color-bg-primary);
-  border-bottom: 1px solid var(--color-border-subtle);
+  background: rgba(10, 10, 10, 0.4);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,7 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid var(--color-border-subtle);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   transition: width var(--transition-base);
   flex-shrink: 0;
 }

@@ -5,6 +5,7 @@ import { login as apiLogin } from '../api/endpoints';
 import { prefetchAllData } from '../utils/prefetch';
 import { LoadingSplash } from '../components/LoadingSplash';
 import vanturaLogo from '../assets/vantura-logo.svg';
+import loginBg from '../assets/dashboard-bg.png';
 import styles from './Login.module.css';
 
 export function Login() {
@@ -66,6 +67,10 @@ export function Login() {
 
   return (
     <div className={styles.container}>
+      <div
+        className={styles.backgroundImage}
+        style={{ backgroundImage: `url(${loginBg})` }}
+      />
       <div className={styles.loginBox}>
         <img src={vanturaLogo} alt="Vantura" className={styles.logo} />
 
@@ -84,7 +89,8 @@ export function Login() {
               className={styles.input}
               placeholder="you@example.com"
               required
-              autoComplete="email"
+              autoComplete="off"
+              data-form-type="other"
               autoFocus
             />
           </div>
@@ -101,7 +107,8 @@ export function Login() {
               className={styles.input}
               placeholder="••••••••"
               required
-              autoComplete="current-password"
+              autoComplete="off"
+              data-form-type="other"
             />
           </div>
 

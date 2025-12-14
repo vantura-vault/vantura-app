@@ -1,0 +1,160 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.attachedList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.attachedItem {
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-metallic);
+  border-radius: 6px;
+  padding: var(--spacing-3);
+}
+
+.fileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2);
+}
+
+.fileInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.fileIcon {
+  color: var(--color-accent-primary);
+  flex-shrink: 0;
+}
+
+.fileName {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  word-break: break-all;
+}
+
+.removeButton {
+  padding: var(--spacing-1);
+  background: transparent;
+  border: 1px solid var(--color-border-metallic);
+  border-radius: 4px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removeButton:hover {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.descriptionInput {
+  width: 100%;
+  padding: var(--spacing-2);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-metallic);
+  border-radius: 4px;
+  color: var(--color-text-primary);
+  font-size: 0.8125rem;
+  transition: all 0.2s ease;
+}
+
+.descriptionInput:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+}
+
+.descriptionInput::placeholder {
+  color: var(--color-text-muted);
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  background: transparent;
+  border: 1px dashed var(--color-border-metallic);
+  border-radius: 6px;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addButton:hover {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
+}
+
+.fileSelector {
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-metallic);
+  border-radius: 6px;
+  padding: var(--spacing-2);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.loadingMessage,
+.emptyMessage {
+  padding: var(--spacing-3);
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+}
+
+.fileList {
+  display: flex;
+  flex-direction: column;
+}
+
+.fileOption {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--color-text-primary);
+  font-size: 0.8125rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fileOption:hover {
+  background: var(--color-bg-secondary);
+}
+
+.fileOption:hover .addIcon {
+  color: var(--color-accent-primary);
+}
+
+.fileOptionName {
+  flex: 1;
+  word-break: break-all;
+}
+
+.addIcon {
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}

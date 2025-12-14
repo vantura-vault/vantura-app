@@ -4,6 +4,7 @@ import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { WebSocketProvider } from '../../providers/WebSocketProvider';
 import { ToastContainer } from '../shared/Toast';
+import appBg from '../../assets/dashboard-bg.png';
 import styles from './MainLayout.module.css';
 
 interface MainLayoutProps {
@@ -17,6 +18,10 @@ export function MainLayout({ children }: MainLayoutProps) {
   return (
     <WebSocketProvider>
       <div className={styles.layout}>
+        <div
+          className={styles.backgroundImage}
+          style={{ backgroundImage: `url(${appBg})` }}
+        />
         <Sidebar isCollapsed={isSidebarCollapsed} onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)} />
         <div className={`${styles.mainContent} ${isSidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
           <TopBar isSidebarCollapsed={isSidebarCollapsed} />

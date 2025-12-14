@@ -29,8 +29,17 @@ export const useAuthStore = create<AuthState>()(
         set({ user, token, isAuthenticated: true });
       },
       clearAuth: () => {
+        // Clear auth
         localStorage.removeItem('auth_token');
+        localStorage.removeItem('auth-storage');
+
+        // Clear app-specific cached data
+        localStorage.removeItem('vantura_blueprint_results');
+        localStorage.removeItem('vantura_saved_blueprint_ids');
+        localStorage.removeItem('vantura_blueprint_config_width');
+
         set({ user: null, token: null, isAuthenticated: false });
+
         // Clear all React Query cache to prevent showing old user's data
         queryClient.clear();
       },

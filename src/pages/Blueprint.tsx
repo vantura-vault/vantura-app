@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Sparkles, Copy, Check, Save, Edit2, Lightbulb, Bookmark } from 'lucide-react';
+import { Sparkles, Copy, Check, Save, Edit2, Lightbulb, Bookmark, Megaphone } from 'lucide-react';
 import { useGenerateSuggestions, useCompanyId, useSaveBlueprint, useBlueprints } from '../hooks';
+import { FileAttachmentSection } from '../components/blueprints/FileAttachmentSection';
 import { Button } from '../components/shared/Button';
 import { ChipFilter, type ChipOption } from '../components/shared/ChipFilter';
 import { BlueprintCard, BlueprintDetailModal } from '../components/blueprints';
@@ -9,18 +10,20 @@ import { PlatformIcon } from '../components/shared/PlatformIcon';
 import type { Blueprint as BlueprintType } from '../types/blueprint';
 import styles from './Blueprint.module.css';
 
-// Local storage key for persisting blueprint results and saved state
+// Local storage keys for persisting state
 const BLUEPRINT_STORAGE_KEY = 'vantura_blueprint_results';
 const SAVED_STATE_KEY = 'vantura_saved_blueprint_ids';
+const CONFIG_WIDTH_KEY = 'vantura_blueprint_config_width';
 
-type Tab = 'generate' | 'saved';
+type Tab = 'generate' | 'campaign' | 'saved';
 
 export function Blueprint() {
   const [activeTab, setActiveTab] = useState<Tab>('generate');
-  const [platform, setPlatform] = useState<'LinkedIn' | 'Twitter' | 'Instagram'>('LinkedIn');
+  const [platform, setPlatform] = useState<'LinkedIn'>('LinkedIn');
   const [objective, setObjective] = useState('engagement');
-  const [contentAngle, setContentAngle] = useState('data-driven');
-  const [topics, setTopics] = useState('growth, innovation');
+  const [customObjective, setCustomObjective] = useState('');
+  const [prompt, setPrompt] = useState('');
+  const [attachedDocuments, setAttachedDocuments] = useState<Array<{ fileId: string; fileName: string; description: string }>>([]);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [savedResults, setSavedResults] = useState<any>(null);
 
@@ -29,16 +32,19 @@ export function Blueprint() {
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(null);
   const [savedBlueprintIds, setSavedBlueprintIds] = useState<(string | null)[]>([null, null, null]);
 
-  // Intelligence switches
-  const [useDataChamber, setUseDataChamber] = useState(true);
-  const [useYourTopPosts, setUseYourTopPosts] = useState(true);
-  const [useCompetitorPosts, setUseCompetitorPosts] = useState(true);
-
   // Saved blueprints tab state
   const [savedPlatformFilter, setSavedPlatformFilter] = useState<string>('');
   const [savedActionFilter, setSavedActionFilter] = useState<string>('');
   const [copiedSavedId, setCopiedSavedId] = useState<string | null>(null);
   const [selectedBlueprint, setSelectedBlueprint] = useState<BlueprintType | null>(null);
+
+  // Resizable panel state
+  const [configWidth, setConfigWidth] = useState(() => {
+    const saved = localStorage.getItem(CONFIG_WIDTH_KEY);
+    return saved ? parseInt(saved, 10) : 600; // Default to max width
+  });
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Filter options
   const platformOptions: ChipOption[] = [
@@ -117,7 +123,18 @@ export function Blueprint() {
     const saved = localStorage.getItem(BLUEPRINT_STORAGE_KEY);
     if (saved) {
       try {
-        setSavedResults(JSON.parse(saved));
+        const parsedResults = JSON.parse(saved);
+        setSavedResults(parsedResults);
+
+        // Extract titles: prioritize embedded _editedTitles, fall back to generated titles
+        if (parsedResults._editedTitles) {
+          setBlueprintTitles(parsedResults._editedTitles);
+        } else {
+          const generatedTitle = parsedResults.blueprint?.title || 'Blueprint';
+          const variantCount = parsedResults.variants?.length || 3;
+          const titles = Array.from({ length: variantCount }, (_, i) => `${generatedTitle} #${i + 1}`);
+          setBlueprintTitles(titles);
+        }
       } catch (e) {
         console.error('Failed to parse saved blueprint results:', e);
       }
@@ -136,8 +153,16 @@ export function Blueprint() {
   // Save results to localStorage whenever generateMutation data changes
   useEffect(() => {
     if (generateMutation.data) {
-      localStorage.setItem(BLUEPRINT_STORAGE_KEY, JSON.stringify(generateMutation.data));
-      setSavedResults(generateMutation.data);
+      // Set titles from the generated blueprint title
+      const generatedTitle = generateMutation.data.blueprint?.title || 'Blueprint';
+      const variantCount = generateMutation.data.variants?.length || 3;
+      const titles = Array.from({ length: variantCount }, (_, i) => `${generatedTitle} #${i + 1}`);
+      setBlueprintTitles(titles);
+
+      // Embed titles in results and save to localStorage
+      const resultsWithTitles = { ...generateMutation.data, _editedTitles: titles };
+      setSavedResults(resultsWithTitles);
+      localStorage.setItem(BLUEPRINT_STORAGE_KEY, JSON.stringify(resultsWithTitles));
     }
   }, [generateMutation.data]);
 
@@ -147,14 +172,12 @@ export function Blueprint() {
   }, [savedBlueprintIds]);
 
   const handleGenerate = () => {
-    const topicTags = topics.split(',').map((t) => t.trim()).filter(Boolean);
-
     // Reset saved state when generating new blueprints
     setSavedBlueprintIds([null, null, null]);
     setBlueprintTitles(['Blueprint 1', 'Blueprint 2', 'Blueprint 3']);
     localStorage.removeItem(SAVED_STATE_KEY);
 
-    // Clear previous results so loading state shows cleanly
+    // Clear previous results (titles are embedded, so cleared together)
     setSavedResults(null);
     localStorage.removeItem(BLUEPRINT_STORAGE_KEY);
 
@@ -162,12 +185,12 @@ export function Blueprint() {
       companyId,
       platform,
       objective,
-      contentAngle,
-      topicTags,
+      customObjective: objective === 'other' ? customObjective : undefined,
+      prompt: prompt || undefined,
+      attachedDocuments: attachedDocuments.length > 0
+        ? attachedDocuments.map(doc => ({ fileId: doc.fileId, description: doc.description }))
+        : undefined,
       nVariants: 3,
-      useDataChamber,
-      useYourTopPosts,
-      useCompetitorPosts,
     });
   };
 
@@ -188,12 +211,7 @@ export function Blueprint() {
         companyId,
         title: blueprintTitles[index],
         platform,
-        objective,
-        topicTags: topics.split(',').map(t => t.trim()).filter(Boolean),
-        contentAngle,
-        useDataChamber,
-        useYourTopPosts,
-        useCompetitorPosts,
+        objective: objective === 'other' ? customObjective : objective,
         reasoning: variant.reasoning,
         visualDescription: blueprint.visualDescription || '',
         hook: blueprint.hook || '',
@@ -229,6 +247,13 @@ export function Blueprint() {
     const newTitles = [...blueprintTitles];
     newTitles[index] = newTitle;
     setBlueprintTitles(newTitles);
+
+    // Update savedResults with new titles and persist to localStorage
+    if (savedResults) {
+      const updatedResults = { ...savedResults, _editedTitles: newTitles };
+      setSavedResults(updatedResults);
+      localStorage.setItem(BLUEPRINT_STORAGE_KEY, JSON.stringify(updatedResults));
+    }
   };
 
   const handleTitleBlur = () => {
@@ -259,6 +284,47 @@ export function Blueprint() {
     }
   };
 
+  // Resize handlers for draggable divider
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDragging || !containerRef.current) return;
+
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const newWidth = e.clientX - containerRect.left;
+
+    // Constrain width between 300px and 600px
+    const clampedWidth = Math.min(Math.max(newWidth, 300), 600);
+    setConfigWidth(clampedWidth);
+  }, [isDragging]);
+
+  const handleMouseUp = useCallback(() => {
+    if (isDragging) {
+      setIsDragging(false);
+      localStorage.setItem(CONFIG_WIDTH_KEY, configWidth.toString());
+    }
+  }, [isDragging, configWidth]);
+
+  // Attach mouse event listeners for resize
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [isDragging, handleMouseMove, handleMouseUp]);
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -277,20 +343,31 @@ export function Blueprint() {
           onClick={() => setActiveTab('generate')}
         >
           <Sparkles size={18} />
-          Generate New
+          Post
+        </button>
+        <button
+          className={`${styles.tab} ${activeTab === 'campaign' ? styles.tabActive : ''}`}
+          onClick={() => setActiveTab('campaign')}
+        >
+          <Megaphone size={18} />
+          Campaign
         </button>
         <button
           className={`${styles.tab} ${activeTab === 'saved' ? styles.tabActive : ''}`}
           onClick={() => setActiveTab('saved')}
         >
           <Bookmark size={18} />
-          Saved Blueprints
+          Saved
           {savedBlueprintsData?.total ? ` (${savedBlueprintsData.total})` : ''}
         </button>
       </div>
 
-      {activeTab === 'generate' ? (
-        <div className={styles.content}>
+      {activeTab === 'generate' && (
+        <div
+          ref={containerRef}
+          className={styles.content}
+          style={{ gridTemplateColumns: `${configWidth}px 8px 1fr` }}
+        >
         <div className={styles.controlPanel}>
           <div className={styles.card}>
             <h2 className={styles.cardTitle}>Configuration</h2>
@@ -300,103 +377,68 @@ export function Blueprint() {
               <select
                 className={styles.select}
                 value={platform}
-                onChange={(e) => setPlatform(e.target.value as any)}
+                onChange={(e) => setPlatform(e.target.value as 'LinkedIn')}
               >
                 <option value="LinkedIn">LinkedIn</option>
-                <option value="Twitter">Twitter</option>
-                <option value="Instagram">Instagram</option>
               </select>
             </div>
 
             <div className={styles.formGroup}>
               <label className={styles.label}>Objective</label>
-              <input
-                type="text"
-                className={styles.input}
-                value={objective}
-                onChange={(e) => setObjective(e.target.value)}
-                placeholder="engagement, brand awareness, thought leadership"
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Content Angle</label>
               <select
                 className={styles.select}
-                value={contentAngle}
-                onChange={(e) => setContentAngle(e.target.value)}
+                value={objective}
+                onChange={(e) => setObjective(e.target.value)}
               >
-                <option value="data-driven">Data-Driven (stats, research, numbers)</option>
-                <option value="storytelling">Storytelling (personal stories, narratives)</option>
-                <option value="educational">Educational (how-to, tutorials)</option>
-                <option value="thought-leadership">Thought Leadership (insights, opinions)</option>
-                <option value="behind-the-scenes">Behind-the-Scenes (process, transparency)</option>
+                <option value="engagement">Engagement (likes, comments, shares)</option>
+                <option value="reach">Reach (impressions, visibility)</option>
+                <option value="announcement">Announcement (news, updates)</option>
+                <option value="other">Other</option>
               </select>
             </div>
 
+            {objective === 'other' && (
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Custom Objective</label>
+                <input
+                  type="text"
+                  className={styles.input}
+                  value={customObjective}
+                  onChange={(e) => setCustomObjective(e.target.value)}
+                  placeholder="Describe your objective..."
+                />
+              </div>
+            )}
+
             <div className={styles.formGroup}>
-              <label className={styles.label}>Topics (comma-separated)</label>
-              <input
-                type="text"
-                className={styles.input}
-                value={topics}
-                onChange={(e) => setTopics(e.target.value)}
-                placeholder="growth, innovation, data-driven"
+              <label className={styles.label}>What would you like to post about?</label>
+              <textarea
+                className={styles.textarea}
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder="Describe what you want to post about. For example: 'A thought leadership post about our new product launch and how it solves customer pain points' or 'Share insights from our recent industry report on AI adoption trends'"
+                rows={4}
               />
             </div>
 
-            <div className={styles.intelligenceSwitches}>
-              <h3 className={styles.switchesTitle}>Intelligence Sources</h3>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Supporting Documents (Optional)</label>
+              <p className={styles.labelHint}>Attach files from your Data Chamber to provide additional context</p>
 
-              <label className={styles.switchLabel}>
-                <input
-                  type="checkbox"
-                  checked={useDataChamber}
-                  onChange={(e) => setUseDataChamber(e.target.checked)}
-                  className={styles.checkbox}
-                />
-                <span className={styles.switchText}>
-                  <strong>Data Chamber</strong>
-                  <span className={styles.switchDescription}>
-                    Use your brand voice, values & audience
-                  </span>
-                </span>
-              </label>
-
-              <label className={styles.switchLabel}>
-                <input
-                  type="checkbox"
-                  checked={useYourTopPosts}
-                  onChange={(e) => setUseYourTopPosts(e.target.checked)}
-                  className={styles.checkbox}
-                />
-                <span className={styles.switchText}>
-                  <strong>Your Top Posts</strong>
-                  <span className={styles.switchDescription}>
-                    Learn from your best performers
-                  </span>
-                </span>
-              </label>
-
-              <label className={styles.switchLabel}>
-                <input
-                  type="checkbox"
-                  checked={useCompetitorPosts}
-                  onChange={(e) => setUseCompetitorPosts(e.target.checked)}
-                  className={styles.checkbox}
-                />
-                <span className={styles.switchText}>
-                  <strong>Competitor Posts</strong>
-                  <span className={styles.switchDescription}>
-                    Analyze competitor patterns & gaps
-                  </span>
-                </span>
-              </label>
+              <FileAttachmentSection
+                companyId={companyId}
+                attachedDocuments={attachedDocuments}
+                onAttach={(doc) => setAttachedDocuments([...attachedDocuments, doc])}
+                onRemove={(fileId) => setAttachedDocuments(attachedDocuments.filter(d => d.fileId !== fileId))}
+                onUpdateDescription={(fileId, description) => setAttachedDocuments(
+                  attachedDocuments.map(d => d.fileId === fileId ? { ...d, description } : d)
+                )}
+              />
             </div>
 
             <Button
               onClick={handleGenerate}
-              disabled={generateMutation.isPending}
+              disabled={generateMutation.isPending || (objective === 'other' && !customObjective.trim())}
               className={styles.generateButton}
             >
               <Sparkles size={18} />
@@ -422,10 +464,22 @@ export function Blueprint() {
                   <strong>Competitor Angles:</strong>{' '}
                   {(generateMutation.data?.meta || savedResults?.meta)?.competitorAngles} insights
                 </p>
+                {(generateMutation.data?.meta || savedResults?.meta)?.attachedDocsCount > 0 && (
+                  <p>
+                    <strong>Documents Used:</strong>{' '}
+                    {(generateMutation.data?.meta || savedResults?.meta)?.attachedDocsCount} files
+                  </p>
+                )}
               </div>
             </div>
           )}
         </div>
+
+        {/* Draggable Divider */}
+        <div
+          className={`${styles.resizeDivider} ${isDragging ? styles.dragging : ''}`}
+          onMouseDown={handleMouseDown}
+        />
 
         <div className={styles.resultsPanel}>
           {!generateMutation.data && !savedResults && !generateMutation.isPending && (
@@ -539,7 +593,17 @@ export function Blueprint() {
           )}
         </div>
       </div>
-      ) : (
+      )}
+
+      {activeTab === 'campaign' && (
+        <div className={styles.comingSoonState}>
+          <Megaphone size={64} className={styles.comingSoonIcon} />
+          <h3>Campaign</h3>
+          <p>Campaign creation tools coming soon!</p>
+        </div>
+      )}
+
+      {activeTab === 'saved' && (
         /* Saved Blueprints Tab */
         <div className={styles.savedBlueprintsSection}>
           {/* Chip Filters */}
@@ -584,7 +648,7 @@ export function Blueprint() {
             <div className={styles.emptyState}>
               <Bookmark size={64} className={styles.emptyIcon} />
               <h3>No Saved Blueprints</h3>
-              <p>Save blueprints from the "Generate New" tab to see them here</p>
+              <p>Save blueprints from the "Post" tab to see them here</p>
             </div>
           )}
 

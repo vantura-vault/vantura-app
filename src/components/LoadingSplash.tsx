@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import loadingGif from '../assets/vantura-loading.gif';
+import loginBg from '../assets/dashboard-bg.png';
 import styles from './LoadingSplash.module.css';
 
 const LOADING_MESSAGES = [
@@ -71,6 +72,10 @@ export function LoadingSplash({ onComplete, prefetchFn }: LoadingSplashProps) {
 
   return (
     <div className={styles.container}>
+      <div
+        className={styles.backgroundImage}
+        style={{ backgroundImage: `url(${loginBg})` }}
+      />
       <div className={styles.content}>
         <img src={loadingGif} alt="Loading..." className={styles.loadingGif} />
 

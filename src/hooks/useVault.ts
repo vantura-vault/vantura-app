@@ -137,7 +137,7 @@ export const useRefreshAllCompetitors = () => {
     mutationFn: (companyId: string) => refreshAllCompetitors(companyId),
     onSuccess: (data, companyId) => {
       if (data.inProgress) {
-        toast.warning('A scrape is already in progress. Please wait.');
+        toast.info('A scrape is already in progress. Please wait.');
       } else if (data.queued > 0) {
         toast.success(`Refreshing ${data.queued} competitor${data.queued > 1 ? 's' : ''}...`);
         if (data.skipped > 0) {

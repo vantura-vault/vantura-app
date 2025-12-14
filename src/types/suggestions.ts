@@ -1,15 +1,18 @@
 // Post Suggestions API Types
 
+export interface AttachedDocument {
+  fileId: string;
+  description: string;
+}
+
 export interface GenerateSuggestionsParams {
   companyId: string;
   platform: string;
   objective?: string;
-  contentAngle?: string;
-  topicTags?: string[];
+  customObjective?: string;  // For "other" objective option
+  prompt?: string;           // Free-form "what to post about"
+  attachedDocuments?: AttachedDocument[];
   nVariants?: number;
-  useDataChamber?: boolean;
-  useYourTopPosts?: boolean;
-  useCompetitorPosts?: boolean;
 }
 
 export interface PostVariant {
@@ -22,13 +25,14 @@ export interface PostVariant {
 export interface SuggestionBrief {
   platform: string;
   objective?: string;
-  topicTags?: string[];
+  prompt?: string;
 }
 
 export interface SuggestionsMetadata {
   brief: SuggestionBrief;
-  examplesUsed: any[];
-  competitorAngles: any[];
+  examplesUsed: number;
+  competitorAngles: number;
+  attachedDocsCount?: number;
 }
 
 export interface BlueprintData {
