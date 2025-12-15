@@ -50,7 +50,6 @@ export function ApiTest() {
         companyId,
         platform: 'LinkedIn',
         objective: 'engagement',
-        topicTags: ['growth', 'innovation'],
         nVariants: 2,
       },
       {

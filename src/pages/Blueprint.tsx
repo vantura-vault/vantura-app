@@ -212,6 +212,7 @@ export function Blueprint() {
         title: blueprintTitles[index],
         platform,
         objective: objective === 'other' ? customObjective : objective,
+        topicTags: [],
         reasoning: variant.reasoning,
         visualDescription: blueprint.visualDescription || '',
         hook: blueprint.hook || '',

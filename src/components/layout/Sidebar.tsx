@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Database, FileText, Users, ChevronLeft } from 'lucide-react';
+import { Home, Database, FileText, Users, ChevronLeft, Wand2 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
 const menuItems = [
@@ -7,6 +7,7 @@ const menuItems = [
   { path: '/data-chamber', label: 'Data Chamber', icon: Database },
   { path: '/competitor-vault', label: 'Competitor Vault', icon: Users },
   { path: '/blueprint', label: 'Blueprints', icon: FileText },
+  { path: '/studio', label: 'Studio', icon: Wand2 },
 ];
 
 interface SidebarProps {

@@ -4,7 +4,7 @@ import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { WebSocketProvider } from '../../providers/WebSocketProvider';
 import { ToastContainer } from '../shared/Toast';
-import appBg from '../../assets/dashboard-bg.png';
+import appBg from '../../assets/main.jpeg';
 import styles from './MainLayout.module.css';
 
 interface MainLayoutProps {
