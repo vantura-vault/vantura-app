@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { MainLayout } from './components/layout/MainLayout';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { AccessGateWrapper } from './components/AccessGateWrapper';
 import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
 import { Dashboard } from './pages/Dashboard';
@@ -13,8 +14,9 @@ import { ApiTest } from './pages/ApiTest';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <AccessGateWrapper>
+      <BrowserRouter>
+        <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
@@ -96,8 +98,9 @@ function App() {
         />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </AccessGateWrapper>
   );
 }
 
