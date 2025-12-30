@@ -1,0 +1,310 @@
+.container {
+  padding: 0;
+}
+
+/* Blueprint Info Row */
+.blueprintInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: 0 var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+.blueprintTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.objective {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-6);
+  padding: 0 var(--spacing-4);
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.section {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  padding: var(--spacing-4);
+}
+
+.sectionTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-3) 0;
+}
+
+.structureFlow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  background: var(--color-bg-tertiary);
+  padding: var(--spacing-3);
+  border-radius: 6px;
+  margin-bottom: var(--spacing-3);
+}
+
+.structureIcon {
+  color: var(--color-accent-primary);
+  flex-shrink: 0;
+}
+
+.structureText {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.toneGuidance {
+  margin-top: var(--spacing-2);
+}
+
+.toneLabel {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.toneList {
+  margin: var(--spacing-2) 0 0 0;
+  padding-left: var(--spacing-4);
+}
+
+.toneList li {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-1);
+}
+
+.copySection {
+  margin-bottom: var(--spacing-3);
+}
+
+.copySection:last-child {
+  margin-bottom: 0;
+}
+
+.copyLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-2);
+}
+
+.sparkleIcon {
+  color: #f59e0b;
+}
+
+.lightbulbIcon {
+  color: #10b981;
+}
+
+.hookText,
+.contextText {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.collapsibleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+}
+
+.collapsibleHeader:hover {
+  color: var(--color-text-primary);
+}
+
+.collapsibleTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.collapsibleTitle .sectionTitle {
+  margin: 0;
+}
+
+.collapsibleCount {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  background: var(--color-bg-tertiary);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.checklistContainer,
+.antiPatternsContainer {
+  margin-top: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.checklistItem,
+.antiPatternItem {
+  background: var(--color-bg-tertiary);
+  padding: var(--spacing-3);
+  border-radius: 6px;
+}
+
+.checklistHeader,
+.antiPatternHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+}
+
+.checklistIcon {
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+.antiPatternIcon {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.checklistLabel,
+.antiPatternText {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.checklistGuidance,
+.antiPatternReason {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.competitorInsight {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  margin: var(--spacing-2) 0 0 0;
+  font-style: italic;
+}
+
+.visualDescription {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+  color: var(--color-text-secondary);
+}
+
+.infoLabel {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+}
+
+.infoBadge {
+  font-size: 0.75rem;
+  background: var(--color-bg-tertiary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--color-text-primary);
+}
+
+.hashtagsSection {
+  margin-top: var(--spacing-3);
+}
+
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-2);
+}
+
+.hashtagChip {
+  font-size: 0.75rem;
+  background: var(--color-bg-tertiary);
+  color: var(--color-accent-primary);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.insightText {
+  font-size: 0.8125rem;
+  color: var(--color-text-tertiary);
+  font-style: italic;
+  margin: var(--spacing-3) 0 0 0;
+}
+
+.footer {
+  margin-top: var(--spacing-6);
+  padding: 0 var(--spacing-4) var(--spacing-4);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nextButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-5);
+  background: var(--color-accent-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nextButton:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}

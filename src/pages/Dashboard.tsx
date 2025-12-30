@@ -1,6 +1,5 @@
 import { WelcomeHeader } from '../components/dashboard/WelcomeHeader';
 import { MetricsGrid } from '../components/dashboard/MetricsGrid';
-import { PlatformIntel } from '../components/dashboard/PlatformIntel';
 import { EngagementLeaderboard } from '../components/dashboard/EngagementLeaderboard';
 import { RecentBlueprints } from '../components/dashboard/RecentBlueprints';
 import { useDashboard } from '../hooks';
@@ -17,7 +16,6 @@ export function Dashboard() {
     <div className={styles.dashboard}>
       <WelcomeHeader companyName={companyName} logoUrl={companyLogo} />
       <MetricsGrid />
-      <PlatformIntel />
       {dashboard?.engagementLeaderboard && (
         <EngagementLeaderboard entries={dashboard.engagementLeaderboard} />
       )}

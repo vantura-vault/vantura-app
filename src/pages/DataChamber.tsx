@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { PageHeader } from '../components/shared/PageHeader';
 import { ProfileCard } from '../components/datachamber/ProfileCard';
 import { ProfilePictureModal } from '../components/datachamber/ProfilePictureModal';
 import { CompanyValues } from '../components/datachamber/CompanyValues';
@@ -143,20 +144,20 @@ export function DataChamber() {
   if (isLoading) {
     return (
       <div className={styles.dataChamber}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Data Chamber</h1>
-          <p className={styles.subtitle}>Loading your intelligence hub...</p>
-        </div>
+        <PageHeader
+          title="Data Chamber"
+          subtitle="Loading your intelligence hub..."
+        />
       </div>
     );
   }
 
   return (
     <div className={styles.dataChamber}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Data Chamber</h1>
-        <p className={styles.subtitle}>Your Connected Intelligence Hub</p>
-      </div>
+      <PageHeader
+        title="Data Chamber"
+        subtitle="Your connected intelligence hub"
+      />
 
       <div className={styles.layout}>
         <ProfileCard

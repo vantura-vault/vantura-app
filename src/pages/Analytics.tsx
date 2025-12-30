@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { PageHeader } from '../components/shared/PageHeader';
 import { TimeframeSelector, type Timeframe } from '../components/analytics/TimeframeSelector';
 import { FollowerGrowthChart } from '../components/analytics/FollowerGrowthChart';
 import { useHistoricalMetrics, useRecentPosts, useCompanyId } from '../hooks';
@@ -83,14 +84,10 @@ export function Analytics() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Analytics Dashboard</h1>
-          <p className={styles.subtitle}>
-            Performance Overview & Insights
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title="Analytics"
+        subtitle="Performance overview and insights"
+      />
 
       <div className={styles.filterBar}>
         <TimeframeSelector selected={timeframe} onChange={setTimeframe} />

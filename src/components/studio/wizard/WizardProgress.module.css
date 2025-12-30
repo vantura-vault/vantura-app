@@ -1,0 +1,156 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-6) 0;
+  margin-bottom: var(--spacing-6);
+}
+
+.progressTrack {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.stepWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  min-width: 100px;
+}
+
+.connector {
+  position: absolute;
+  top: 16px;
+  right: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--color-border-subtle);
+  z-index: 0;
+}
+
+.connectorActive {
+  background: var(--color-accent-primary);
+}
+
+.stepDot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-tertiary);
+  border: 2px solid var(--color-border-subtle);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.stepDot:hover {
+  border-color: var(--color-accent-primary);
+  transform: scale(1.1);
+}
+
+.stepDotCurrent {
+  background: var(--color-accent-primary);
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+.stepDotCurrent .stepNumber {
+  color: white;
+}
+
+.stepDotCompleted {
+  background: var(--color-accent-primary);
+  border-color: var(--color-accent-primary);
+}
+
+.stepNumber {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.checkIcon {
+  width: 14px;
+  height: 14px;
+  color: white;
+}
+
+.stepLabel {
+  margin-top: var(--spacing-2);
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+.stepLabelCurrent {
+  color: var(--color-accent-primary);
+  font-weight: 500;
+}
+
+/* Sub-steps (for Caption step) */
+.subStepsContainer {
+  display: flex;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-3);
+  padding: var(--spacing-2);
+  background: var(--color-bg-secondary);
+  border-radius: 20px;
+  border: 1px solid var(--color-border-subtle);
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.subStepsHidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.subStepDot {
+  width: 40px;
+  height: 24px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.subStepDot:hover {
+  border-color: var(--color-accent-primary);
+  transform: scale(1.05);
+}
+
+.subStepDotCurrent {
+  background: var(--color-accent-primary);
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.subStepDotCurrent .subStepNumber {
+  color: white;
+}
+
+.subStepDotCompleted {
+  background: var(--color-accent-primary);
+  border-color: var(--color-accent-primary);
+}
+
+.subStepNumber {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.subCheckIcon {
+  width: 10px;
+  height: 10px;
+  color: white;
+}

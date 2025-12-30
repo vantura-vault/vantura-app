@@ -20,16 +20,6 @@
   margin: 0;
 }
 
-.loading,
-.error {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;
-  font-size: var(--font-size-base);
-  color: var(--color-text-secondary);
-}
-
-.error {
-  color: #ef4444;
+.tabContent {
+  min-height: 400px;
 }

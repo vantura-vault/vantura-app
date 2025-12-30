@@ -205,7 +205,7 @@
   line-height: 1.6;
 }
 
-/* Hashtags & Mentions */
+/* Tags (Hashtags & Mentions) */
 .tagsContainer {
   display: flex;
   flex-wrap: wrap;
@@ -231,7 +231,7 @@
   color: var(--color-text-secondary);
 }
 
-/* Posting Intelligence */
+/* Distribution Strategy */
 .infoRow {
   display: flex;
   align-items: center;
@@ -259,6 +259,19 @@
   color: var(--color-text-secondary);
   line-height: 1.5;
   font-style: italic;
+}
+
+/* Distribution Strategy Subsections */
+.strategySubsection {
+  margin-top: var(--spacing-3);
+  padding-top: var(--spacing-3);
+  border-top: 1px solid var(--color-border-metallic);
+}
+
+.strategySubsection .infoLabel {
+  display: block;
+  margin-bottom: var(--spacing-2);
+  font-weight: 500;
 }
 
 /* Data & Insights */
@@ -396,6 +409,43 @@
   line-height: 1.5;
 }
 
+/* Suggested Spend - Coming Soon */
+.comingSoonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-4);
+  text-align: center;
+}
+
+.comingSoonIcon {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+  margin-bottom: var(--spacing-3);
+}
+
+.comingSoonBadge {
+  display: inline-block;
+  padding: var(--spacing-1) var(--spacing-3);
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-metallic);
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-2);
+}
+
+.comingSoonText {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+
 /* Footer */
 .footer {
   display: flex;
@@ -454,6 +504,189 @@
 
 .primaryButton:hover {
   background: #b8102f;
+}
+
+/* Content Framework */
+.structureFlow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  background: var(--color-bg-tertiary);
+  border-radius: 6px;
+  margin-bottom: var(--spacing-3);
+}
+
+.structureIcon {
+  color: #dc143c;
+  flex-shrink: 0;
+}
+
+.structureText {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.toneGuidance {
+  padding-top: var(--spacing-2);
+}
+
+.toneLabel {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  display: block;
+  margin-bottom: var(--spacing-2);
+}
+
+.toneList {
+  margin: 0;
+  padding-left: var(--spacing-4);
+  list-style-type: disc;
+}
+
+.toneList li {
+  font-size: 0.8125rem;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-1);
+}
+
+/* Collapsible Sections */
+.collapsibleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: color 0.2s ease;
+}
+
+.collapsibleHeader:hover {
+  color: var(--color-text-primary);
+}
+
+.collapsibleTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.collapsibleTitle .sectionTitle {
+  margin: 0;
+}
+
+.collapsibleCount {
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-bg-tertiary);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+/* What to Include - Checklist */
+.checklistContainer {
+  margin-top: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.checklistItem {
+  padding: var(--spacing-3);
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-metallic);
+  border-radius: 8px;
+  border-left: 3px solid #22c55e;
+}
+
+.checklistHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+}
+
+.checklistIcon {
+  color: #22c55e;
+  flex-shrink: 0;
+}
+
+.checklistLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.checklistGuidance {
+  margin: 0 0 var(--spacing-2) 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+.competitorInsight {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  margin: 0;
+  padding: var(--spacing-2);
+  background: rgba(234, 179, 8, 0.1);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #eab308;
+  line-height: 1.4;
+}
+
+.competitorInsight svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* What NOT to Do - Anti-patterns */
+.antiPatternsContainer {
+  margin-top: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.antiPatternItem {
+  padding: var(--spacing-3);
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  border-left: 3px solid #ef4444;
+}
+
+.antiPatternHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+}
+
+.antiPatternIcon {
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.antiPatternText {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ef4444;
+}
+
+.antiPatternReason {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
 }
 
 /* Responsive */

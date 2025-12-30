@@ -1,12 +1,12 @@
 /* Design System Tokens - Vantura Dark Luxury */
 :root {
-  /* Background Colors - Deeper blacks matching landing page */
+  /* Background Colors - Semi-transparent for gradient background */
   --color-bg-primary: #000000;
-  --color-bg-secondary: #0a0a0a;
-  --color-bg-tertiary: #121212;
-  --color-bg-elevated: #1a1a1a;
-  --color-bg-card: #0f0f0f;
-  --color-bg-medium: #2a2a2a;
+  --color-bg-secondary: rgba(10, 10, 10, 0.6);
+  --color-bg-tertiary: rgba(18, 18, 18, 0.6);
+  --color-bg-elevated: rgba(26, 26, 26, 0.6);
+  --color-bg-card: rgba(15, 15, 15, 0.6);
+  --color-bg-medium: rgba(42, 42, 42, 0.6);
 
   /* Border Colors */
   --color-border-subtle: #1a1a1a;

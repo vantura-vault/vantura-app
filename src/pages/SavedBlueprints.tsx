@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Bookmark, Copy, Trash2, Check, Edit2, Lightbulb, ChevronDown } from 'lucide-react';
+import { Copy, Trash2, Check, Edit2, Lightbulb, ChevronDown, Bookmark } from 'lucide-react';
+import { PageHeader } from '../components/shared/PageHeader';
 import { useBlueprints, useDeleteBlueprint, useUpdateBlueprintTitle, useCompanyId } from '../hooks';
 import styles from './SavedBlueprints.module.css';
 
-type SortBy = 'createdAt' | 'vanturaScore' | 'title';
+type SortBy = 'createdAt' | 'title';
 
 export function SavedBlueprints() {
   const companyId = useCompanyId();
@@ -94,17 +95,10 @@ export function SavedBlueprints() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>
-            <Bookmark size={32} className={styles.titleIcon} />
-            Saved Blueprints
-          </h1>
-          <p className={styles.subtitle}>
-            Your library of data-backed content strategies ({total} saved)
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title="Blueprints"
+        subtitle={`Your library of data-backed content strategies (${total} saved)`}
+      />
 
       {/* Filters */}
       <div className={styles.filters}>
@@ -130,7 +124,6 @@ export function SavedBlueprints() {
             onChange={(e) => setSortBy(e.target.value as SortBy)}
           >
             <option value="createdAt">Recent</option>
-            <option value="vanturaScore">Score</option>
             <option value="title">Title</option>
           </select>
         </div>
@@ -163,9 +156,6 @@ export function SavedBlueprints() {
               <div className={styles.cardHeader}>
                 <div className={styles.cardMeta}>
                   <span className={styles.platformBadge}>{blueprint.platform}</span>
-                  <span className={styles.scoreChip}>
-                    {blueprint.vanturaScore?.toFixed(1) || 'N/A'}
-                  </span>
                 </div>
                 <div className={styles.cardActions}>
                   <button

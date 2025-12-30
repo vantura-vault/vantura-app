@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Plus, LayoutGrid, List, RefreshCw, Loader2 } from 'lucide-react';
 import type { Competitor } from '../types/competitor';
+import { PageHeader } from '../components/shared/PageHeader';
 import { CompetitorCard } from '../components/competitor/CompetitorCard';
 import { CompetitorListItem } from '../components/competitor/CompetitorListItem';
 import { AddCompetitorModal } from '../components/competitor/AddCompetitorModal';
@@ -78,52 +79,52 @@ export function CompetitorVault() {
     );
   };
 
+  const subtitle = isLoading
+    ? 'Loading competitor intelligence...'
+    : `Tracking ${competitors.length} competitor${competitors.length !== 1 ? 's' : ''} across strategic channels`;
+
   return (
     <div className={styles.competitorVault}>
-      <div className={styles.header}>
-        <div className={styles.titleSection}>
-          <h1 className={styles.title}>Intelligence Network</h1>
-          <p className={styles.subtitle}>
-            {isLoading
-              ? 'Loading competitor intelligence...'
-              : `Tracking ${competitors.length} competitor${competitors.length !== 1 ? 's' : ''} across strategic channels`}
-          </p>
-        </div>
-        <div className={styles.actions}>
-          <div className={styles.viewToggle}>
-            <button
-              className={`${styles.toggleButton} ${viewMode === 'card' ? styles.active : ''}`}
-              onClick={() => setViewMode('card')}
-              aria-label="Card view"
+      <PageHeader
+        title="Competitor Vault"
+        subtitle={subtitle}
+        actions={
+          <>
+            <div className={styles.viewToggle}>
+              <button
+                className={`${styles.toggleButton} ${viewMode === 'card' ? styles.active : ''}`}
+                onClick={() => setViewMode('card')}
+                aria-label="Card view"
+              >
+                <LayoutGrid size={18} />
+              </button>
+              <button
+                className={`${styles.toggleButton} ${viewMode === 'list' ? styles.active : ''}`}
+                onClick={() => setViewMode('list')}
+                aria-label="List view"
+              >
+                <List size={18} />
+              </button>
+            </div>
+            <Button
+              variant="secondary"
+              onClick={() => refreshAll(companyId)}
+              disabled={isRefreshing || competitors.length === 0}
             >
-              <LayoutGrid size={18} />
-            </button>
-            <button
-              className={`${styles.toggleButton} ${viewMode === 'list' ? styles.active : ''}`}
-              onClick={() => setViewMode('list')}
-              aria-label="List view"
-            >
-              <List size={18} />
-            </button>
-          </div>
-          <Button
-            variant="secondary"
-            onClick={() => refreshAll(companyId)}
-            disabled={isRefreshing || competitors.length === 0}
-          >
-            {isRefreshing ? (
-              <Loader2 size={18} className={styles.spinner} />
-            ) : (
-              <RefreshCw size={18} />
-            )}
-            Refresh All
-          </Button>
-          <Button onClick={handleAddCompetitor}>
-            <Plus size={18} />
-            Add Competitor
-          </Button>
-        </div>
-      </div>
+              {isRefreshing ? (
+                <Loader2 size={18} className={styles.spinner} />
+              ) : (
+                <RefreshCw size={18} />
+              )}
+              Refresh All
+            </Button>
+            <Button onClick={handleAddCompetitor}>
+              <Plus size={18} />
+              Add Competitor
+            </Button>
+          </>
+        }
+      />
 
       {competitors.length === 0 ? (
         <div className={styles.emptyState}>

@@ -18,6 +18,23 @@ export interface Reference {
   reason: string;
 }
 
+// Content Guidance Types (Process-based blueprint)
+export interface ContentFramework {
+  structure: string;          // "Hook → Story → Data → Insight → CTA"
+  toneGuidance: string[];     // ["Confident but not boastful", ...]
+}
+
+export interface WhatToIncludeItem {
+  label: string;              // "Hook", "Story", "Data", etc.
+  guidance: string;           // Semi-specific instruction
+  competitorInsight?: string; // Why this works
+}
+
+export interface WhatNotToDoItem {
+  antiPattern: string;        // What to avoid
+  reason: string;             // Why it hurts engagement
+}
+
 export interface Blueprint {
   id: string;
   companyId: string;
@@ -70,6 +87,11 @@ export interface Blueprint {
   estimatedEngagementMax?: number;
   optimizationNote?: string;
 
+  // Content Guidance (Process-based blueprint)
+  contentFramework?: ContentFramework;
+  whatToInclude?: WhatToIncludeItem[];
+  whatNotToDo?: WhatNotToDoItem[];
+
   createdAt: string;
   updatedAt: string;
 }
@@ -106,4 +128,8 @@ export interface CreateBlueprintParams {
   estimatedEngagementMin?: number;
   estimatedEngagementMax?: number;
   optimizationNote?: string;
+  // Content Guidance (Process-based blueprint)
+  contentFramework?: ContentFramework;
+  whatToInclude?: WhatToIncludeItem[];
+  whatNotToDo?: WhatNotToDoItem[];
 }

@@ -1,0 +1,114 @@
+.container {
+  min-height: 100%;
+  padding: var(--spacing-6);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+.backLink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: var(--spacing-2);
+  margin-left: calc(-1 * var(--spacing-2));
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.backLink:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-secondary);
+}
+
+.pageTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.mainLayout {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  gap: var(--spacing-4);
+}
+
+.mainLayoutFullWidth {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.stepContent {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 12px;
+  min-height: 500px;
+}
+
+.assistantPanel {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 12px;
+  padding: var(--spacing-4);
+}
+
+@media (max-width: 1024px) {
+  .mainLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .assistantPanel {
+    display: none;
+  }
+}
+
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: var(--spacing-4);
+  color: var(--color-text-secondary);
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  color: var(--color-accent-primary);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-4);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}

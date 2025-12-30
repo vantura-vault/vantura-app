@@ -1,0 +1,323 @@
+/* Shared styles for caption sub-step components */
+
+.container {
+  padding: 0;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--spacing-4);
+  padding: 0 var(--spacing-4);
+}
+
+.guidanceColumn,
+.editorColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.columnTitle {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/* Guidance Section */
+.guidanceSection {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  padding: var(--spacing-3);
+}
+
+.guidanceTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+.guidanceIcon {
+  color: var(--color-accent-primary);
+}
+
+.tipIcon {
+  color: #10b981;
+}
+
+.warningIcon {
+  color: #f59e0b;
+}
+
+.guidanceText {
+  font-size: 0.8125rem;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.tipsList {
+  margin: 0;
+  padding-left: var(--spacing-4);
+}
+
+.tipsList li {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-1);
+  line-height: 1.4;
+}
+
+.exampleCard {
+  background: var(--color-bg-tertiary);
+  border-radius: 6px;
+  padding: var(--spacing-2);
+  margin-top: var(--spacing-2);
+}
+
+.exampleLabel {
+  font-size: 0.6875rem;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-1);
+}
+
+.exampleText {
+  font-size: 0.8125rem;
+  color: var(--color-text-primary);
+  font-style: italic;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Editor Section */
+.editorWrapper {
+  position: relative;
+  flex: 1;
+}
+
+.textInput {
+  width: 100%;
+  padding: var(--spacing-4);
+  padding-bottom: var(--spacing-8);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.textInput:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.textInput::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.textInputError {
+  border-color: #ef4444;
+}
+
+.hookInput {
+  min-height: 120px;
+}
+
+.bodyInput {
+  min-height: 200px;
+}
+
+.engagementInput {
+  min-height: 120px;
+}
+
+.ctaInput {
+  min-height: 100px;
+}
+
+.charCount {
+  position: absolute;
+  bottom: var(--spacing-3);
+  right: var(--spacing-3);
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}
+
+.charCountError {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.charCountWarning {
+  color: #f59e0b;
+}
+
+
+/* Preview section for showing combined caption */
+.previewSection {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  padding: var(--spacing-3);
+}
+
+.previewTitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+.previewContent {
+  font-size: 0.8125rem;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.previewEmpty {
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+
+/* Hashtag Section (for CTA step) */
+.hashtagSection {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  padding: var(--spacing-3);
+}
+
+.hashtagTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+.hashtagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+
+.hashtagChip {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hashtagChip:hover {
+  border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
+}
+
+.hashtagChipSelected {
+  background: var(--color-accent-primary);
+  color: white;
+  border-color: var(--color-accent-primary);
+}
+
+.hashtagChipSelected:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.hashtagEngagement {
+  font-size: 0.6875rem;
+  opacity: 0.7;
+}
+
+.hashtagHint {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  margin: var(--spacing-2) 0 0 0;
+}
+
+/* Footer */
+.footer {
+  margin-top: var(--spacing-6);
+  padding: 0 var(--spacing-4) var(--spacing-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-4);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+
+.nextButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-5);
+  background: var(--color-accent-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nextButton:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.nextButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}

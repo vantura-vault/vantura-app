@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  height: 100%;
+}
+
+.title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.comingSoonCard {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  padding: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-2);
+}
+
+.comingSoonIcon {
+  color: var(--color-text-tertiary);
+}
+
+.comingSoonBadge {
+  font-size: 0.6875rem;
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-tertiary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.comingSoonText {
+  font-size: 0.8125rem;
+  color: var(--color-text-tertiary);
+  margin: 0;
+  line-height: 1.4;
+}

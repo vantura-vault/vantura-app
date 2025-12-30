@@ -141,11 +141,6 @@ export function RecentBlueprints() {
           >
             <div className={styles.cardContent}>
               <h4 className={styles.cardTitle}>{blueprint.title}</h4>
-              {blueprint.vanturaScore && (
-                <span className={styles.scoreBadge}>
-                  Score: {Math.round(blueprint.vanturaScore)}%
-                </span>
-              )}
             </div>
             <div className={styles.platformIcon}>
               <PlatformIcon platform={blueprint.platform} size={32} />

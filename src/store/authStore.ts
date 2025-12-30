@@ -8,6 +8,7 @@ export interface User {
   email: string;
   companyId?: string | null;
   avatar?: string;
+  role?: string;
 }
 
 interface AuthState {

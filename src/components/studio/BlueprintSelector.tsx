@@ -76,9 +76,6 @@ export function BlueprintSelector({ blueprints, onSelect }: BlueprintSelectorPro
               <div className={styles.cardHeader}>
                 <PlatformIcon size={18} className={styles.platformIcon} />
                 <span className={styles.platform}>{blueprint.platform}</span>
-                {blueprint.vanturaScore && (
-                  <span className={styles.score}>{blueprint.vanturaScore}</span>
-                )}
               </div>
               <h3 className={styles.cardTitle}>{blueprint.title}</h3>
               <p className={styles.cardHook}>{blueprint.hook}</p>

@@ -34,6 +34,11 @@ import type {
   Blueprint,
   CreateBlueprintParams,
 } from '../types/blueprint';
+import type {
+  Draft,
+  CreateDraftParams,
+  UpdateDraftParams,
+} from '../types/draft';
 
 // Authentication
 export interface RegisterParams {
@@ -325,4 +330,87 @@ export const uploadCompanyFiles = async (
 
 export const deleteCompanyFile = async (fileId: string): Promise<{ deleted: boolean }> => {
   return apiClient.delete<{ deleted: boolean }>(`/files/${fileId}`);
+};
+
+// Drafts
+export const createDraft = async (params: CreateDraftParams): Promise<Draft> => {
+  return apiClient.post<Draft>('/drafts', params);
+};
+
+export const fetchDrafts = async (): Promise<Draft[]> => {
+  return apiClient.get<Draft[]>('/drafts');
+};
+
+export const fetchDraft = async (id: string): Promise<Draft> => {
+  return apiClient.get<Draft>(`/drafts/${id}`);
+};
+
+export const fetchDraftByBlueprint = async (blueprintId: string): Promise<Draft | null> => {
+  return apiClient.get<Draft | null>(`/drafts/by-blueprint/${blueprintId}`);
+};
+
+export const updateDraft = async (id: string, params: UpdateDraftParams): Promise<Draft> => {
+  return apiClient.patch<Draft>(`/drafts/${id}`, params);
+};
+
+export const deleteDraft = async (id: string): Promise<{ message: string }> => {
+  return apiClient.delete<{ message: string }>(`/drafts/${id}`);
+};
+
+// Admin API
+import type {
+  AdminStats,
+  AdminUsersResponse,
+  AdminCompaniesResponse,
+  ApiUsageData,
+  BillingData,
+  DeactivateUserResponse,
+  ResetPasswordResponse,
+} from '../types/admin';
+
+export const fetchAdminStats = async (): Promise<AdminStats> => {
+  return apiClient.get<AdminStats>('/admin/stats');
+};
+
+export const fetchAdminUsers = async (params?: {
+  limit?: number;
+  offset?: number;
+  search?: string;
+}): Promise<AdminUsersResponse> => {
+  const queryParams = new URLSearchParams();
+  if (params?.limit) queryParams.append('limit', params.limit.toString());
+  if (params?.offset) queryParams.append('offset', params.offset.toString());
+  if (params?.search) queryParams.append('search', params.search);
+  const query = queryParams.toString();
+  return apiClient.get<AdminUsersResponse>(`/admin/users${query ? `?${query}` : ''}`);
+};
+
+export const fetchAdminCompanies = async (params?: {
+  limit?: number;
+  offset?: number;
+  search?: string;
+}): Promise<AdminCompaniesResponse> => {
+  const queryParams = new URLSearchParams();
+  if (params?.limit) queryParams.append('limit', params.limit.toString());
+  if (params?.offset) queryParams.append('offset', params.offset.toString());
+  if (params?.search) queryParams.append('search', params.search);
+  const query = queryParams.toString();
+  return apiClient.get<AdminCompaniesResponse>(`/admin/companies${query ? `?${query}` : ''}`);
+};
+
+export const fetchApiUsage = async (range?: '24h' | '7d' | '30d'): Promise<ApiUsageData> => {
+  const query = range ? `?range=${range}` : '';
+  return apiClient.get<ApiUsageData>(`/admin/api-usage${query}`);
+};
+
+export const fetchBillingData = async (): Promise<BillingData> => {
+  return apiClient.get<BillingData>('/admin/billing');
+};
+
+export const deactivateUser = async (userId: string): Promise<DeactivateUserResponse> => {
+  return apiClient.post<DeactivateUserResponse>(`/admin/users/${userId}/deactivate`);
+};
+
+export const resetUserPassword = async (userId: string): Promise<ResetPasswordResponse> => {
+  return apiClient.post<ResetPasswordResponse>(`/admin/users/${userId}/reset-password`);
 };
